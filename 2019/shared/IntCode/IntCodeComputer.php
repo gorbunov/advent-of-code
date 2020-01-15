@@ -30,7 +30,7 @@ class IntCodeComputer
 
     private function boot(Closure $bootloader): IntCodeRunner
     {
-        $program = $bootloader($this->memory);
+        $program = $bootloader(clone $this->memory);
         return IntCodeRunner::fromProgram($program);
     }
 
