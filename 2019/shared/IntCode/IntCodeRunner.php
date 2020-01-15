@@ -31,8 +31,7 @@ class IntCodeRunner
     public function run(): self
     {
         while ($this->program->running()) {
-            $opcode = $this->program->opcode();
-            $this->program = $opcode->apply($this->program);
+            $this->program = $this->program->opcode()->apply($this->program);
         }
         return $this;
     }

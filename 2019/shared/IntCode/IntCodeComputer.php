@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-
 namespace IntCode;
 
+use Closure;
 
 class IntCodeComputer
 {
@@ -23,12 +23,12 @@ class IntCodeComputer
         return new self($program);
     }
 
-    public function run(Bootloader $bootloader): Program
+    public function run(Closure $bootloader): Program
     {
         return $this->boot($bootloader)->run()->program();
     }
 
-    private function boot(Bootloader $bootloader): IntCodeRunner
+    private function boot(Closure $bootloader): IntCodeRunner
     {
         $program = $bootloader($this->memory);
         return IntCodeRunner::fromProgram($program);
