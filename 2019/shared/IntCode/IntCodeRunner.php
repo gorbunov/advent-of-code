@@ -20,13 +20,17 @@ class IntCodeRunner
     {
         $opcodes = explode(',', $program);
         $program = Program::createFromArray($opcodes);
+        return self::fromProgram($program);
+    }
+
+    public static function fromProgram(Program $program): self
+    {
         return new self($program);
     }
 
     public function run(): self
     {
-        while ($this->program->running())
-        {
+        while ($this->program->running()) {
             $opcode = $this->program->opcode();
             $this->program = $opcode->apply($this->program);
         }
