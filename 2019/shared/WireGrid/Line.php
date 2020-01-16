@@ -12,11 +12,36 @@ final class Line
      * @var Position
      */
     private $end;
+    /**
+     * @var int
+     */
+    private $length;
 
     private function __construct(Position $start, Position $end)
     {
         $this->start = $start;
         $this->end = $end;
+        $this->length = abs($this->end->x() - $this->start->x()) + abs($this->end->y() - $this->start->y());
+    }
+
+    private function minX(): int
+    {
+        return min($this->start->x(), $this->end->x());
+    }
+
+    private function minY(): int
+    {
+        return min($this->start->y(), $this->end->y());
+    }
+
+    private function maxX(): int
+    {
+        return max($this->start->x(), $this->end->x());
+    }
+
+    private function maxY(): int
+    {
+        return max($this->start->y(), $this->end->y());
     }
 
     public static function createFromPoints(Position $start, Position $end): Line
@@ -34,7 +59,8 @@ final class Line
             return false;
         }
 
-        return true;
+        $intersection = $this->intersects_at($line);
+        return $this->has_point($intersection) && $line->has_point($intersection);
     }
 
     private function touches(Line $line): bool
@@ -67,6 +93,14 @@ final class Line
         return $this->end;
     }
 
+    /**
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
     private function is_parallel(Line $line): bool
     {
         return $this->is_horizontal() === $line->is_horizontal();
@@ -74,7 +108,7 @@ final class Line
 
     private function is_horizontal(): bool
     {
-        return $this->start->x() === $this->end->x();
+        return $this->start->y() === $this->end->y();
     }
 
     public function intersection(Line $line): ?Position
@@ -87,7 +121,12 @@ final class Line
             return null;
         }
 
-        return $this->intersects_at($line);
+        $intersection = $this->intersects_at($line);
+        if ($this->has_point($intersection) && $line->has_point($intersection)) {
+            return $intersection;
+        }
+
+        return null;
     }
 
     private function touches_at(Line $line): ?Position
@@ -106,9 +145,23 @@ final class Line
 
     private function intersects_at(Line $line): Position
     {
-        $x = $this->is_horizontal() ? $this->start->x() : $line->getStart()->x();
-        $y = $this->is_horizontal() ? $line->getStart()->y() : $this->start->y();
+        $x = $this->is_horizontal()?$line->getStart()->x():$this->start->x();
+        $y = $this->is_horizontal()?$this->start->y():$line->getStart()->y();
         return Position::create($x, $y);
+    }
+
+    public function has_point(Position $position): bool
+    {
+        $on_x = $this->minX() <= $position->x() && $this->maxX() >= $position->x();
+        $on_y = $this->minY() <= $position->y() && $this->maxY() >= $position->y();
+        //echo (string)$position, (string)$this, ':', $on_x,':', $on_y, "\n";
+        return $on_x && $on_y;
+    }
+
+    public function distance_to_position(Position $position): int
+    {
+        //var_dump('ps',(string)$position, (string)$this);
+        return abs(($position->x() - $this->start->x()) + ($position->y() - $this->start->y()));
     }
 
     public function __toString()
@@ -118,6 +171,6 @@ final class Line
 
     public function toString(): string
     {
-        return implode(' - ', [(string)$this->start, (string)$this->end]);
+        return implode(' - ', [(string)$this->start, (string)$this->end]) . ' L: '. $this->length;
     }
 }
