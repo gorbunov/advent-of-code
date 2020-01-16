@@ -5,15 +5,27 @@ namespace IntCode;
 class IntCodeRunner
 {
     private $program;
+    /**
+     * @var int
+     */
+    private $input;
+    /**
+     * @var int
+     */
+    private $output;
 
     /**
      * IntCode constructor.
      *
      * @param Program $program
+     * @param int     $input
+     * @param int     $output
      */
-    private function __construct(Program $program)
+    private function __construct(Program $program, int $input, int $output)
     {
         $this->program = $program;
+        $this->input = $input;
+        $this->output = $output;
     }
 
     public static function fromString($program): self
