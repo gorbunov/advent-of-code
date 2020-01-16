@@ -10,6 +10,7 @@ final class Validator
      * @var Validation[]
      */
     private $rules;
+    private $failed;
 
     private function __construct(array $rules)
     {
@@ -30,9 +31,15 @@ final class Validator
     {
         foreach ($this->rules as $rule) {
             if (!$rule->validate($value)) {
+                $this->failed = get_class($rule);
                 return false;
             }
         }
         return true;
+    }
+
+    public function error()
+    {
+        return $this->failed;
     }
 }
