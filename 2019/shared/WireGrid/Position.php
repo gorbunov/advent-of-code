@@ -13,15 +13,20 @@ final class Position
      */
     private $y;
 
+    private function __construct(int $x, int $y)
+    {
+        $this->x = $x;
+        $this->y = $y;
+    }
+
     public static function create(int $x, int $y): self
     {
         return new self($x, $y);
     }
 
-    private function __construct(int $x, int $y)
+    public function distance(Position $position): int
     {
-        $this->x = $x;
-        $this->y = $y;
+        return abs($this->x() - $position->x()) + abs($this->y - $position->y());
     }
 
     /**
@@ -40,13 +45,23 @@ final class Position
         return $this->y;
     }
 
-    public function distance(Position $position): int
-    {
-        return abs($this->x() - $position->x()) + abs($this->y - $position->y());
-    }
-
     public function apply(Direction $direction): Position
     {
         return $direction->fromPosition($this);
+    }
+
+    public function equals(Position $position): bool
+    {
+        return $this->x() === $position->x() && $this->y() === $position->y();
+    }
+
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    public function toString(): string
+    {
+        return sprintf('(%d, %d)', $this->x, $this->y);
     }
 }
