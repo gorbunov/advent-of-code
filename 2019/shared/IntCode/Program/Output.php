@@ -27,4 +27,9 @@ class Output
     {
         return $this->outputs;
     }
+
+    public function pop(): ?int
+    {
+        return array_pop($this->outputs);
+    }
 }

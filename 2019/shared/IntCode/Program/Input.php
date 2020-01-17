@@ -30,4 +30,10 @@ class Input
     {
         return array_shift($this->inputs);
     }
+
+    public function push(int $value): self
+    {
+        $this->inputs[] = $value;
+        return $this;
+    }
 }
