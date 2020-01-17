@@ -9,4 +9,6 @@ $program = trim(file_get_contents('./program.txt'));
 $input = Input::create([1]);
 $cpu = IntCodeComputer::load($program, $input);
 
-$cpu->run();
+$output = $cpu->run()->output();
+
+print_array_values($output->outputs());

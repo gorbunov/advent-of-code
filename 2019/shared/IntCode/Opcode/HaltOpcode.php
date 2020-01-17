@@ -8,10 +8,10 @@ use IntCode\Program;
 
 final class HaltOpcode extends CommonOpcode
 {
-    public function apply(Program $program): Program
+    public function apply(): Program
     {
-        $program = $program->halt();
-        return parent::apply($program);
+        $this->program()->halt();
+        return parent::apply();
     }
 
     public static function size(): int

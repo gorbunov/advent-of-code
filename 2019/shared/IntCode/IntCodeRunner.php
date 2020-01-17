@@ -35,8 +35,12 @@ class IntCodeRunner
 
     public function run(): self
     {
+        $step = 0;
         while ($this->program->running()) {
-            $this->program = $this->program->opcode()->apply($this->program);
+            $step++;
+            $opcode = $this->program->opcode();
+            printf("Step: %d, Opcode: %s\n", $step, $opcode);
+            $this->program = $opcode->apply($this->program);
         }
         return $this;
     }

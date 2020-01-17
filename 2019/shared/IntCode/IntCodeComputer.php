@@ -24,7 +24,7 @@ class IntCodeComputer
         return new self($program);
     }
 
-    public function run(?Closure $bootloader): Program
+    public function run(?Closure $bootloader = null): Program
     {
         return $this->boot($bootloader)->run()->program();
     }

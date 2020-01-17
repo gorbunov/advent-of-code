@@ -48,7 +48,7 @@ class Program
         return $this->program[$position];
     }
 
-    public function readAhead(int $count) : array
+    public function readAhead(int $count): array
     {
         return \array_slice($this->program, $this->position, $count);
     }
@@ -93,6 +93,11 @@ class Program
     public function output(): Output
     {
         return $this->output;
+    }
+
+    public function position(): int
+    {
+        return $this->position;
     }
 
     public function __toString()

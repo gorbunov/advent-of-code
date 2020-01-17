@@ -8,25 +8,30 @@ use IntCode\Program;
 abstract class CommonOpcode implements Opcode
 {
     private $modes;
-    public static function create(array $modes): Opcode
-    {
-        return new static($modes);
-    }
+    /**
+     * @var Program
+     */
+    private $program;
+    /**
+     * @var array
+     */
+    private $params;
 
-    private function __construct(array $modes)
+    private function __construct(Program $program, array $modes, array $params)
     {
         $this->modes = $modes;
+        $this->program = $program;
+        $this->params = $params;
     }
 
-    public function apply(Program $program): Program
+    public static function create(Program $program, array $modes, array $params): Opcode
     {
-        $program->advance(self::size());
-        return $program;
+        return new static($program, $modes, $params);
     }
 
-    protected function params(Program $program): array
+    public function apply(): Program
     {
-        return \array_slice($program->readAhead(self::size()), 1); // offset 1 - opcode itself
+        return $this->program->advance(static::size());
     }
 
     public static function size(): int
@@ -39,4 +44,25 @@ abstract class CommonOpcode implements Opcode
         return $this->modes;
     }
 
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    public function toString(): string
+    {
+        $modes = sprintf('[%s]', implode(', ', $this->modes));
+        $params = sprintf('(%s)', implode(', ', $this->params));
+        return sprintf('%s, size: %d; Mode: %s, Params: %s', \get_class($this), static::size(), $modes, $params);
+    }
+
+    public function params(): array
+    {
+        return $this->params;
+    }
+
+    public function program(): Program
+    {
+        return $this->program;
+    }
 }
