@@ -51,6 +51,12 @@ class Program
         return $this;
     }
 
+    public function jumpTo(int $position): self
+    {
+        $this->position = $position;
+        return $this;
+    }
+
     public function read(int $argument, int $mode = Mode::POSITION): int
     {
         return ($mode === Mode::POSITION) ? $this->readAtPosition($argument) : $argument;

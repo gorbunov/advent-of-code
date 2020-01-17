@@ -13,6 +13,10 @@ class Factory
         MultiplicationOpcode::OPCODE => MultiplicationOpcode::class,
         InputOpcode::OPCODE          => InputOpcode::class,
         OutputOpcode::OPCODE         => OutputOpcode::class,
+        JumpIfTrueOpcode::OPCODE     => JumpIfTrueOpcode::class,
+        JumpIfFalseOpcode::OPCODE    => JumpIfFalseOpcode::class,
+        LessThanOpcode::OPCODE       => LessThanOpcode::class,
+        EqualsOpcode::OPCODE         => EqualsOpcode::class,
         HaltOpcode::OPCODE           => HaltOpcode::class,
     ];
 

@@ -1,12 +1,14 @@
 <?php declare(strict_types=1);
 
+
 namespace IntCode\Opcode;
+
 
 use IntCode\Program;
 
-final class AdditionOpcode extends CommonOpcode
+final class EqualsOpcode extends CommonOpcode
 {
-    public const OPCODE = 1;
+    public const OPCODE = 8;
 
     public static function size(): int
     {
@@ -19,7 +21,8 @@ final class AdditionOpcode extends CommonOpcode
         [$mode1, $mode2] = $this->modes();
         $operand1 = $this->program()->read($param1, $mode1);
         $operand2 = $this->program()->read($param2, $mode2);
-        $this->program()->alter($resultPosition, $operand1 + $operand2, Mode::POSITION);
+        $result = $operand1 === $operand2 ? 1 : 0;
+        $this->program()->alter($resultPosition, $result);
         return parent::apply();
     }
 }

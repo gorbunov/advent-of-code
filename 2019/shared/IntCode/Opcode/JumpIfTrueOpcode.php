@@ -3,6 +3,8 @@
 
 namespace IntCode\Opcode;
 
+use IntCode\Program;
+
 final class JumpIfTrueOpcode extends CommonOpcode
 {
     public const OPCODE = 5;
@@ -10,5 +12,10 @@ final class JumpIfTrueOpcode extends CommonOpcode
     public static function size(): int
     {
         return 3;
+    }
+
+    public function apply(): Program
+    {
+
     }
 }
