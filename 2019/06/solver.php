@@ -2,3 +2,7 @@
 
 require_once __DIR__.'/../shared/autoload.php';
 $orbits = file('./orbits.txt', FILE_IGNORE_NEW_LINES);
+
+$map = \Orbiting\OrbitMap::createFromMap($orbits);
+
+printf("Orbits map checksum: %d\n", $map->orbitsCount());

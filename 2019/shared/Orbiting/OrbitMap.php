@@ -10,10 +10,11 @@ final class OrbitMap
      * @var Body[]
      */
     private $bodies;
+
     /**
-     * @var Body[]
+     * @var Body
      */
-    private $orbits;
+    private $com;
 
     private function __construct(array $orbits)
     {
@@ -21,7 +22,9 @@ final class OrbitMap
             $parent = $this->bodyReference($parent);
             $body = $this->bodyReference($body);
             $parent->orbitedBy($body);
+            $body->orbitsAround($parent);
         }
+        $this->com = $this->bodyReference('COM');
     }
 
     public function bodyReference(string $name): Body
@@ -44,5 +47,15 @@ final class OrbitMap
     private static function parseOrbitRecord(string $record): array
     {
         return explode(')', $record);
+    }
+
+    public function orbitsCount(): int
+    {
+        return $this->COM()->orbitsCount(0);
+    }
+
+    public function COM(): Body
+    {
+        return $this->com;
     }
 }
