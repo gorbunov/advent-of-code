@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/../../shared/autoload.php';
 
-$orbits = file('./sample.txt');
+$orbits = file('./sample.txt', FILE_IGNORE_NEW_LINES);
 
 $map = \Orbiting\OrbitMap::createFromMap($orbits);
+var_dump($map);
