@@ -59,11 +59,11 @@ final class OrbitMap
         return $this->com;
     }
 
-    public function getBranch(string $name): array
+    public function getBranch(string $name, string $to): array
     {
         $branch = [];
         $body = $this->bodyReference($name);
-        while (!$body->is('COM')) {
+        while (!$body->is($to)) {
             $body = $body->parent();
             $branch[] = $body;
         }

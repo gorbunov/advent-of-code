@@ -6,6 +6,6 @@ $orbits = file('./orbitmap2.txt', FILE_IGNORE_NEW_LINES);
 
 $map = \Orbiting\OrbitMap::createFromMap($orbits);
 
-$path = $map->getBranch('K');
+$path = $map->getBranch('K', 'COM');
 print_array_values($path);
 
