@@ -5,6 +5,7 @@ namespace Orbiting;
 class Body
 {
     private const DEBUG = false;
+
     /**
      * @var string
      */
@@ -14,8 +15,9 @@ class Body
      * @var Body[]
      */
     private $bodies = [];
+
     /**
-     * @var ?Body
+     * @var Body|null
      */
     private $parent;
 
@@ -73,6 +75,21 @@ class Body
             },
             $this->bodies
         );
-        return sprintf("[%s]", implode(', ', $names));
+        return sprintf('[%s]', implode(', ', $names));
+    }
+
+    public function is(string $name): bool
+    {
+        return $this->name === $name;
+    }
+
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    private function toString(): string
+    {
+        return sprintf('(%s)', $this->name);
     }
 }
