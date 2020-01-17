@@ -9,11 +9,11 @@ use IntCode\Program;
 class Factory
 {
     private static $mapping = [
-        1  => AdditionOpcode::class,
-        2  => MultiplicationOpcode::class,
-        3  => InputOpcode::class,
-        4  => OutputOpcode::class,
-        99 => HaltOpcode::class,
+        AdditionOpcode::OPCODE       => AdditionOpcode::class,
+        MultiplicationOpcode::OPCODE => MultiplicationOpcode::class,
+        InputOpcode::OPCODE          => InputOpcode::class,
+        OutputOpcode::OPCODE         => OutputOpcode::class,
+        HaltOpcode::OPCODE           => HaltOpcode::class,
     ];
 
     public static function create(Program $program): Opcode

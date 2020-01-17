@@ -6,6 +6,8 @@ use IntCode\Program;
 
 final class AdditionOpcode extends CommonOpcode
 {
+    public const OPCODE = 1;
+
     public function apply(): Program
     {
         [$param1, $param2, $resultPosition] = $this->params();

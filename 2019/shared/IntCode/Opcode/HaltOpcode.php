@@ -8,6 +8,8 @@ use IntCode\Program;
 
 final class HaltOpcode extends CommonOpcode
 {
+    public const OPCODE = 99;
+
     public function apply(): Program
     {
         $this->program()->halt();

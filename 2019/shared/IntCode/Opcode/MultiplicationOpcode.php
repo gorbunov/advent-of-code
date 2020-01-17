@@ -8,6 +8,8 @@ use IntCode\Program;
 
 final class MultiplicationOpcode extends CommonOpcode
 {
+    public const OPCODE = 2;
+
     public function apply(): Program
     {
         [$mode1, $mode2] = $this->modes();

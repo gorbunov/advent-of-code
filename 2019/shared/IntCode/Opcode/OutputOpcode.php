@@ -6,6 +6,8 @@ use IntCode\Program;
 
 final class OutputOpcode extends CommonOpcode
 {
+    public const OPCODE = 4;
+
     public function apply(): Program
     {
         [$params] = $this->params();
