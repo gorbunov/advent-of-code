@@ -40,7 +40,8 @@ class IntCodeRunner
             $step++;
             $opcode = $this->program->opcode();
             printf("Step: %d, Opcode: %s\n", $step, $opcode);
-            $this->program = $opcode->apply($this->program);
+            printf("Program: %s\n", substr((string)$this->program, 0, 30));
+            $this->program = $opcode->apply();
         }
         return $this;
     }

@@ -8,9 +8,9 @@ final class AdditionOpcode extends CommonOpcode
 {
     public function apply(): Program
     {
-        [$op1Position, $op2Position, $resultPosition] = $this->params();
-        $operand1 = $this->program()->read($op1Position);
-        $operand2 = $this->program()->read($op2Position);
+        [$param1, $param2, $resultPosition] = $this->params();
+        $operand1 = $this->program()->read($param1);
+        $operand2 = $this->program()->read($param2);
         $this->program()->alter($resultPosition, $operand1 + $operand2);
         return parent::apply();
     }

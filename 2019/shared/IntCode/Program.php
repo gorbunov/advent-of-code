@@ -16,7 +16,13 @@ class Program
     private $position = 0;
     private $halted = false;
 
+    /**
+     * @var Input
+     */
     private $input;
+    /**
+     * @var Output
+     */
     private $output;
 
     /**
@@ -29,6 +35,7 @@ class Program
     {
         $this->program = $program;
         $this->input = $input;
+        $this->output = Output::create();
     }
 
     public static function createFromArray(array $program, Input $input): Program
@@ -105,8 +112,16 @@ class Program
         return $this->toString();
     }
 
-    public function toString(): string
+    private function toString(): string
     {
         return implode(',', $this->program);
+    }
+
+    /**
+     * @return Input
+     */
+    public function input(): Input
+    {
+        return $this->input;
     }
 }
