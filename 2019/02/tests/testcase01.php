@@ -13,7 +13,7 @@ $i = 0;
 foreach ($fixtures as $input => $expected)
 {
     $i++;
-    $result = (string)\IntCode\IntCodeRunner::fromString($input)->run()->program();
+    $result = (string)\IntCode\IntCodeRunner::fromCodeString($input)->run()->program();
     if (assert($expected === $result, sprintf('Test #%d: Expected: %s, Result: %s', $i, $expected, $result)))
     {
         printf("Test #%d succeeded.\n", $i);

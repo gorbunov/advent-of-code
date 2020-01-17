@@ -2,36 +2,29 @@
 
 namespace IntCode;
 
+use IntCode\Program\Input;
+
 class IntCodeRunner
 {
+    /**
+     * @var Program
+     */
     private $program;
-    /**
-     * @var int
-     */
-    private $input;
-    /**
-     * @var int
-     */
-    private $output;
 
     /**
      * IntCode constructor.
      *
      * @param Program $program
-     * @param int     $input
-     * @param int     $output
      */
-    private function __construct(Program $program, int $input, int $output)
+    private function __construct(Program $program)
     {
         $this->program = $program;
-        $this->input = $input;
-        $this->output = $output;
     }
 
-    public static function fromString($program): self
+    public static function fromCodeString(string $code, Input $input): self
     {
-        $opcodes = explode(',', $program);
-        $program = Program::createFromArray($opcodes);
+        $opcodes = explode(',', $code);
+        $program = Program::createFromArray($opcodes, $input);
         return self::fromProgram($program);
     }
 

@@ -3,7 +3,9 @@
 namespace IntCode;
 
 use IntCode\Opcode\Opcode;
+use IntCode\Program\Input;
 use IntCode\Opcode\Factory;
+use IntCode\Program\Output;
 
 class Program
 {
@@ -14,20 +16,25 @@ class Program
     private $position = 0;
     private $halted = false;
 
+    private $input;
+    private $output;
+
     /**
      * Program constructor.
      *
      * @param array $program
+     * @param Input $input
      */
-    private function __construct(array $program)
+    private function __construct(array $program, Input $input)
     {
         $this->program = $program;
+        $this->input = $input;
     }
 
-    public static function createFromArray(array $program)
+    public static function createFromArray(array $program, Input $input): Program
     {
         $program = array_map('\intval', $program);
-        return new self($program);
+        return new self($program, $input);
     }
 
     public function advance(int $size): self
@@ -81,6 +88,11 @@ class Program
     public function toArray(): array
     {
         return $this->program;
+    }
+
+    public function output(): Output
+    {
+        return $this->output;
     }
 
     public function __toString()

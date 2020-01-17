@@ -25,6 +25,6 @@ for ($password = $range[0]; $password <= $range[1]; $password++) {
 }
 
 print_array_values($range);
+
 printf("Valid passwords #01 count: %d\n", $valid);
 printf("Valid passwords #02 count: %d\n", $valid2);
-

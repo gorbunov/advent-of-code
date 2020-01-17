@@ -3,6 +3,7 @@
 namespace IntCode;
 
 use Closure;
+use IntCode\Program\Input;
 
 class IntCodeComputer
 {
@@ -16,10 +17,10 @@ class IntCodeComputer
         $this->memory = $program;
     }
 
-    public static function load(string $memory): self
+    public static function load(string $memory, Input $input): self
     {
         $opcodes = explode(',', $memory);
-        $program = Program::createFromArray($opcodes);
+        $program = Program::createFromArray($opcodes, $input);
         return new self($program);
     }
 
