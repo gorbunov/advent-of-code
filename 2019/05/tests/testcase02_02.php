@@ -15,7 +15,7 @@ $i = 0;
 foreach ($fixtures as $input => $expected) {
     $i++;
     $cr = IntCodeRunner::fromCodeString($program, Input::create([$input]))->run();
-    print_array_values($cr->program()->output()->outputs());
+    $result = $cr->program()->output()->outputs()[0];
     if (assert($expected === $result, sprintf('Test #%d: Expected: %s, Result: %s', $i, $expected, $result))) {
         printf("Test #%d succeeded.\n", $i);
     }
