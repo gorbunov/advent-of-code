@@ -7,9 +7,9 @@ use IntCode\Program;
 final class InputOpcode extends CommonOpcode
 {
 
-    public function apply(Program $program): Program
+    public function apply(): Program
     {
-        return parent::apply($program);
+        return parent::apply();
     }
 
     public static function size(): int

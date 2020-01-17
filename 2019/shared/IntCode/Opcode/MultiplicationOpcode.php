@@ -16,4 +16,9 @@ final class MultiplicationOpcode extends CommonOpcode
         $this->program()->alter($resultPosition, $operand1 * $operand2);
         return parent::apply();
     }
+
+    public static function size(): int
+    {
+        return 4;
+    }
 }

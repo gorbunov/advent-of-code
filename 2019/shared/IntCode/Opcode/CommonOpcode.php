@@ -34,11 +34,6 @@ abstract class CommonOpcode implements Opcode
         return $this->program->advance(static::size());
     }
 
-    public static function size(): int
-    {
-        return 4;
-    }
-
     public function modes(): array
     {
         return $this->modes;
@@ -49,7 +44,7 @@ abstract class CommonOpcode implements Opcode
         return $this->toString();
     }
 
-    public function toString(): string
+    private function toString(): string
     {
         $modes = sprintf('[%s]', implode(', ', $this->modes));
         $params = sprintf('(%s)', implode(', ', $this->params));

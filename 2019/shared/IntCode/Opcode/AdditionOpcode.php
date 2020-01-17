@@ -11,8 +11,12 @@ final class AdditionOpcode extends CommonOpcode
         [$op1Position, $op2Position, $resultPosition] = $this->params();
         $operand1 = $this->program()->read($op1Position);
         $operand2 = $this->program()->read($op2Position);
-        $program = $this->program()->alter($resultPosition, $operand1 + $operand2);
+        $this->program()->alter($resultPosition, $operand1 + $operand2);
         return parent::apply();
     }
 
+    public static function size(): int
+    {
+        return 4;
+    }
 }
