@@ -9,3 +9,9 @@ $map = \Orbiting\OrbitMap::createFromMap($orbits);
 $path = $map->getBranch('K', 'COM');
 print_array_values($path);
 
+$path2 = $map->getBranch('SAN', 'COM');
+print_array_values($path2);
+
+print_array_values([$map->getIntersection('K', 'SAN')]);
+print_array_values($map->getPath('YOU', 'SAN'));
+

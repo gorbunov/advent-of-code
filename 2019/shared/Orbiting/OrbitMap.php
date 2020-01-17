@@ -70,4 +70,24 @@ final class OrbitMap
 
         return $branch;
     }
+
+    public function getIntersection(string $from, string $to): string
+    {
+        $branch1 = $this->getBranch($from, 'COM');
+        $branch2 = $this->getBranch($to, 'COM');
+        $intersection = array_intersect($branch1, $branch2);
+        $intersection = array_shift($intersection);
+        return $intersection->name();
+    }
+
+    public function getPath(string $from, string $to): array
+    {
+        $intersection = $this->getIntersection($from, $to);
+        $path = [];
+        $branch = $this->getBranch($from, $intersection);
+        array_shift($path);
+        $branch2 = $this->getBranch($to, $intersection);
+        $path = array_unique(array_merge($branch, array_reverse($branch2)));
+        return $path;
+    }
 }
