@@ -18,12 +18,12 @@ class Factory
 
     public static function create(Program $program): Opcode
     {
-        $opcode = $program->current();
-        [$opcode, $modes] = self::parseOpcodeMode($opcode);
+        $raw_opcode = $program->current();
+        [$opcode, $modes] = self::parseOpcodeMode($raw_opcode);
         /** @var Opcode $class */
         $class = self::$mapping[$opcode] ?? null;
         if (!$class) {
-            throw new \RuntimeException(sprintf("Unknown OpCode: %d\n Position: %d, Program: %s\n", $opcode, $program->position(), $program));
+            throw new \RuntimeException(sprintf("Unknown OpCode: %d (%d)\n Position: %d, Program: %s\n", $opcode, $raw_opcode, $program->position(), $program));
         }
         $params = self::readParams($program, $class::size());
         return $class::create($program, $modes, $params);
@@ -34,7 +34,7 @@ class Factory
         $strOpcode = str_split(str_pad((string)$opcode, 5, '0', STR_PAD_LEFT), 1);
         $opBytes = array_splice($strOpcode, -2);
         $opcode = (int)implode($opBytes);
-        $modes = array_map('\intval', $strOpcode);
+        $modes = array_map('\intval', array_reverse($strOpcode));
         return [$opcode, $modes];
     }
 

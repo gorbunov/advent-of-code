@@ -8,6 +8,10 @@ final class OutputOpcode extends CommonOpcode
 {
     public function apply(): Program
     {
+        [$params] = $this->params();
+        [$mode] = $this->modes();
+        $value = $this->program()->read($params, $mode);
+        $this->program()->output()->store($value);
         return parent::apply();
     }
 

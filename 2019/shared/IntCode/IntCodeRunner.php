@@ -6,6 +6,7 @@ use IntCode\Program\Input;
 
 class IntCodeRunner
 {
+    private const DEBUG = false;
     /**
      * @var Program
      */
@@ -39,8 +40,10 @@ class IntCodeRunner
         while ($this->program->running()) {
             $step++;
             $opcode = $this->program->opcode();
-            printf("Step: %d, Opcode: %s\n", $step, $opcode);
-            printf("Program: %s\n", substr((string)$this->program, 0, 30));
+            if (self::DEBUG) {
+                printf("Step: %d, Opcode: %s\n", $step, $opcode);
+                printf("Program: %s\n", substr((string)$this->program, 0, 30));
+            }
             $this->program = $opcode->apply();
         }
         return $this;

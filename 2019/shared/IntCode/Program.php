@@ -2,6 +2,7 @@
 
 namespace IntCode;
 
+use IntCode\Opcode\Mode;
 use IntCode\Opcode\Opcode;
 use IntCode\Program\Input;
 use IntCode\Opcode\Factory;
@@ -50,7 +51,12 @@ class Program
         return $this;
     }
 
-    public function read(int $position): int
+    public function read(int $argument, int $mode = Mode::POSITION): int
+    {
+        return ($mode === Mode::POSITION) ? $this->readAtPosition($argument) : $argument;
+    }
+
+    private function readAtPosition(int $position): int
     {
         return $this->program[$position];
     }
@@ -65,7 +71,7 @@ class Program
         return $this->program[$this->position];
     }
 
-    public function alter(int $position, int $value): self
+    public function alter(int $position, int $value, int $mode = Mode::POSITION): self
     {
         $this->program[$position] = $value;
         return $this;
