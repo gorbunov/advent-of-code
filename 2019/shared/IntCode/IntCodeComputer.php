@@ -24,14 +24,17 @@ class IntCodeComputer
         return new self($program);
     }
 
-    public function run(Closure $bootloader): Program
+    public function run(?Closure $bootloader): Program
     {
         return $this->boot($bootloader)->run()->program();
     }
 
-    private function boot(Closure $bootloader): IntCodeRunner
+    private function boot(?Closure $bootloader): IntCodeRunner
     {
-        $program = $bootloader(clone $this->memory);
+        $program = clone $this->memory;
+        if ($bootloader) {
+            $program = $bootloader($program);
+        }
         return IntCodeRunner::fromProgram($program);
     }
 
