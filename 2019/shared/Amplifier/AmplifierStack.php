@@ -3,7 +3,6 @@
 namespace Amplifier;
 
 use Generator;
-use IntCode\Program\IOPass;
 use IntCode\Program\InputFactory;
 use IntCode\Program\OutputFactory;
 
@@ -16,23 +15,42 @@ final class AmplifierStack
     /**
      * @var Amplifier[]
      */
-    private $amps;
+    private $amplifiers;
 
     private function __construct(string $memory, array $amps)
     {
         $this->memory = $memory;
-        $this->amps = $amps;
+        $this->amplifiers = $amps;
     }
 
     public static function createLine(string $program): self
     {
         $amplifiers = [];
-        foreach (range(0, 5) as $ampId) {
+        for ($ampId = 0; $ampId < 5; $ampId++) {
             $amplifiers[] = Amplifier::create($program, InputFactory::empty(), OutputFactory::create());
         }
         return new self($program, $amplifiers);
     }
 
+    /**
+     * @param int[] $phases
+     *
+     * @return self
+     */
+    private function configure(array $phases): AmplifierStack
+    {
+        $ampId = 0;
+        foreach ($phases as $phase) {
+            $amp = $this->amplifier($ampId++);
+            $amp->configure($phase);
+        }
+        return $this;
+    }
+
+    private function amplifier(int $id): Amplifier
+    {
+        return $this->amplifiers[$id];
+    }
 
     /**
      * @param int[] $phases
@@ -41,19 +59,13 @@ final class AmplifierStack
      */
     public function run(array $phases): int
     {
+        $this->configure($phases);
         $signal = 0;
-        $ampId = 0;
-        foreach ($phases as $phase) {
-            $amp = $this->getAmp($ampId++);
-            $amp->run($phase, $signal);
-            $signal = $amp->output()->pop();
+        foreach ($this->amplifiers as $amplifier) {
+            $amplifier->run($signal);
+            $signal = $amplifier->output()->pop();
         }
         return $signal;
-    }
-
-    private function getAmp(int $id): Amplifier
-    {
-        return $this->amps[$id];
     }
 
     public function permutations(array $elements): ?Generator

@@ -11,9 +11,9 @@ final class IOPass implements Output, Input
      */
     private $queue = [];
 
-    public function read(): ?int
+    public static function create(): IOPass
     {
-        return array_shift($this->queue);
+        return new self();
     }
 
     public function store(int $value): Output
@@ -35,5 +35,15 @@ final class IOPass implements Output, Input
     public function outputs(): array
     {
         return $this->queue;
+    }
+
+    public function pop(): ?int
+    {
+        return $this->read();
+    }
+
+    public function read(): ?int
+    {
+        return array_shift($this->queue);
     }
 }

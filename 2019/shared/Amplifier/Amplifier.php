@@ -12,6 +12,10 @@ final class Amplifier
      * @var IntCodeRunner
      */
     private $runner;
+    /**
+     * @var
+     */
+    private $phase;
 
     private function __construct(IntCodeRunner $runner)
     {
@@ -23,9 +27,15 @@ final class Amplifier
         return new self(IntCodeRunner::fromCodeString($program, $input, $output));
     }
 
-    public function run(int $phase, int $signal): self
+    public function configure(int $phase): self
     {
-        $this->input()->insert($phase)->insert($signal);
+        $this->phase = $phase;
+        return $this;
+    }
+
+    public function run(/*int $phase, */int $signal): self
+    {
+        $this->input()->insert($this->phase)->insert($signal);
         $this->runner->run();
         return $this;
     }
