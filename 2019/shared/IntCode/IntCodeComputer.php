@@ -4,6 +4,7 @@ namespace IntCode;
 
 use Closure;
 use IntCode\Program\Input;
+use IntCode\Program\SimpleInput;
 
 class IntCodeComputer
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use IntCode\Program\Input;
+use IntCode\Program\SimpleInput;
 use IntCode\IntCodeRunner;
 
 require_once __DIR__.'/../../shared/autoload.php';
@@ -20,7 +20,7 @@ foreach ($fixtures as $program => $tests) {
     $testCase = 0;
     foreach ($tests as $input => $expected) {
         $testCase++;
-        $cr = IntCodeRunner::fromCodeString($program, Input::create([$input]))->run();
+        $cr = IntCodeRunner::fromCodeString($program, SimpleInput::create([$input]))->run();
         $result = $cr->program()->output()->outputs()[0];
         if (assert($expected === $result, sprintf('Test #%d for Program #%d: Expected: %s, Result: %s', $testCase, $progNum, $expected, $result))) {
             printf("Test #%d for Program #%d succeeded.\n", $testCase, $progNum);

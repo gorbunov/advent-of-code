@@ -5,8 +5,10 @@ namespace IntCode;
 use IntCode\Opcode\Mode;
 use IntCode\Opcode\Opcode;
 use IntCode\Program\Input;
-use IntCode\Opcode\Factory;
 use IntCode\Program\Output;
+use IntCode\Program\SimpleInput;
+use IntCode\Opcode\Factory;
+use IntCode\Program\SimpleOutput;
 
 class Program
 {
@@ -29,20 +31,22 @@ class Program
     /**
      * Program constructor.
      *
-     * @param array $program
-     * @param Input $input
+     * @param array  $program
+     * @param Input  $input
+     * @param Output $output
      */
-    private function __construct(array $program, Input $input)
+    private function __construct(array $program, Input $input, Output $output)
     {
         $this->program = $program;
         $this->input = $input;
-        $this->output = Output::create();
+        $this->output = $output;
     }
 
-    public static function createFromArray(array $program, Input $input): Program
+    public static function createFromArray(array $program, Input $input, ?Output $output): Program
     {
         $program = array_map('\intval', $program);
-        return new self($program, $input);
+        $output = $output ?? SimpleOutput::create();
+        return new self($program, $input, $output);
     }
 
     public function advance(int $size): self

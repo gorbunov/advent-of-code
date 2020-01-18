@@ -1,35 +1,12 @@
 <?php declare(strict_types=1);
 
-
 namespace IntCode\Program;
 
-
-class Output
+interface Output
 {
-    private $outputs = [];
+    public function store(int $value): Output;
 
-    private function __construct()
-    {
-    }
+    public function outputs(): array;
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
-    public function store(int $value): self
-    {
-        $this->outputs[] = $value;
-        return $this;
-    }
-
-    public function outputs(): array
-    {
-        return $this->outputs;
-    }
-
-    public function pop(): ?int
-    {
-        return array_pop($this->outputs);
-    }
+    public function pop(): ?int;
 }

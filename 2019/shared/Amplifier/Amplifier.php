@@ -4,6 +4,7 @@ namespace Amplifier;
 
 use IntCode\IntCodeRunner;
 use IntCode\Program\Input;
+use IntCode\Program\SimpleInput;
 
 final class Amplifier
 {
@@ -23,7 +24,7 @@ final class Amplifier
 
     public static function create(string $program, int $phase, int $signal): Amplifier
     {
-        $input = Input::create([$phase, $signal]);
+        $input = SimpleInput::create([$phase, $signal]);
         return new self(IntCodeRunner::fromCodeString($program, $input));
     }
 

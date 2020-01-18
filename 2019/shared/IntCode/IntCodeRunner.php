@@ -3,6 +3,7 @@
 namespace IntCode;
 
 use IntCode\Program\Input;
+use IntCode\Program\SimpleInput;
 
 class IntCodeRunner
 {
