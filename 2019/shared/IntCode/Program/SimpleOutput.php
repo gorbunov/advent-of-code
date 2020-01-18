@@ -22,4 +22,9 @@ final class SimpleOutput implements Output
     {
         return $this->outputs;
     }
+
+    public function pop(): ?int
+    {
+        return array_shift($this->outputs);
+    }
 }

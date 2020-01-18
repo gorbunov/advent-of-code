@@ -28,7 +28,7 @@ final class AmplifierStack
     {
         $amplifiers = [];
         foreach (range(0, 5) as $ampId) {
-            $amplifiers[$ampId] = Amplifier::create($program, InputFactory::empty(), OutputFactory::create());
+            $amplifiers[] = Amplifier::create($program, InputFactory::empty(), OutputFactory::create());
         }
         return new self($program, $amplifiers);
     }
@@ -46,7 +46,7 @@ final class AmplifierStack
         foreach ($phases as $phase) {
             $amp = $this->getAmp($ampId++);
             $amp->run($phase, $signal);
-            $signal = $amp->output()->outputs()[0];
+            $signal = $amp->output()->pop();
         }
         return $signal;
     }
