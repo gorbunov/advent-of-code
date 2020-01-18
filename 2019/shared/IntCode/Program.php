@@ -6,9 +6,7 @@ use IntCode\Opcode\Mode;
 use IntCode\Opcode\Opcode;
 use IntCode\Program\Input;
 use IntCode\Program\Output;
-use IntCode\Program\SimpleInput;
 use IntCode\Opcode\Factory;
-use IntCode\Program\SimpleOutput;
 
 class Program
 {
@@ -42,10 +40,10 @@ class Program
         $this->output = $output;
     }
 
-    public static function createFromArray(array $program, Input $input, ?Output $output): Program
+    public static function createFromArray(array $program, Input $input, ?Output $output = null): Program
     {
         $program = array_map('\intval', $program);
-        $output = $output ?? SimpleOutput::create();
+        $output = $output ?? Program\OutputFactory::create();
         return new self($program, $input, $output);
     }
 

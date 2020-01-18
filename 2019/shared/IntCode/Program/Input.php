@@ -5,6 +5,5 @@ namespace IntCode\Program;
 interface Input
 {
     public function read(): ?int;
-
-    public function push(int $value): Input;
+    public function insert(int $value): Input;
 }

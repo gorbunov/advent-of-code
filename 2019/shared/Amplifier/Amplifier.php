@@ -4,7 +4,7 @@ namespace Amplifier;
 
 use IntCode\IntCodeRunner;
 use IntCode\Program\Input;
-use IntCode\Program\SimpleInput;
+use IntCode\Program\Output;
 
 final class Amplifier
 {
@@ -12,24 +12,30 @@ final class Amplifier
      * @var IntCodeRunner
      */
     private $runner;
-    /**
-     * @var Input
-     */
-    private $input;
 
     private function __construct(IntCodeRunner $runner)
     {
         $this->runner = $runner;
     }
 
-    public static function create(string $program, int $phase, int $signal): Amplifier
+    public static function create(string $program, Input $input, Output $output): Amplifier
     {
-        $input = SimpleInput::create([$phase, $signal]);
-        return new self(IntCodeRunner::fromCodeString($program, $input));
+        return new self(IntCodeRunner::fromCodeString($program, $input, $output));
     }
 
-    public function run(): int
+    public function run(int $phase, int $signal): int
     {
-        return  $this->runner->run()->program()->output()->outputs()[0];
+        $this->input()->insert($phase)->insert($signal);
+        return $this->runner->run()->program()->output()->outputs()[0];
+    }
+
+    public function input(): Input
+    {
+        return $this->runner->program()->input();
+    }
+
+    public function output(): Output
+    {
+        return $this->runner->program()->output();
     }
 }

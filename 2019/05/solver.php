@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use IntCode\Program\SimpleInput;
 use IntCode\IntCodeComputer;
+use IntCode\Program\InputFactory;
 
 require_once __DIR__.'/../shared/autoload.php';
 
@@ -13,7 +13,7 @@ $inputs = [
 $program = trim(file_get_contents('./program.txt'));
 
 foreach ($inputs as $input => $system) {
-    $input = SimpleInput::create([$input]);
+    $input = InputFactory::create([$input]);
 
     $cpu = IntCodeComputer::load($program, $input);
     $output = $cpu->run()->output();

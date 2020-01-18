@@ -2,19 +2,32 @@
 
 namespace Amplifier;
 
+use IntCode\Program\InputFactory;
+use IntCode\Program\OutputFactory;
+
 final class AmplifierStack
 {
     private $memory;
+    /**
+     * @var Amplifier[]
+     */
+    private $amps;
 
-    private function __construct(string $memory)
+    private function __construct(string $memory, array $amps)
     {
         $this->memory = $memory;
+        $this->amps = $amps;
     }
 
-    public static function create(string $program): self
+    public static function createLine(string $program): self
     {
-        return new self($program);
+        $amplifiers = [];
+        foreach (range(0, 5) as $ampId) {
+            $amplifiers[$ampId] = Amplifier::create($program, InputFactory::empty(), OutputFactory::create());
+        }
+        return new self($program, $amplifiers);
     }
+
 
     /**
      * @param int[] $phases
@@ -24,26 +37,33 @@ final class AmplifierStack
     public function run(array $phases): int
     {
         $signal = 0;
+        $ampId = 0;
         foreach ($phases as $phase) {
-            $signal = Amplifier::create($this->memory, $phase, $signal)->run();
+            $signal = $this->getAmp($ampId++)->run($phase, $signal);
         }
         return $signal;
     }
 
-    public function permutations(array $elements)
+    private function getAmp(int $id): Amplifier
     {
-        if (count($elements) <= 1) {
+        return $this->amps[$id];
+    }
+
+    public function permutations(array $elements): ?\Generator
+    {
+        if (\count($elements) <= 1) {
             yield $elements;
         } else {
-            foreach ($this->permutations(array_slice($elements, 1)) as $permutation) {
-                foreach (range(0, count($elements) - 1) as $i) {
+            foreach ($this->permutations(\array_slice($elements, 1)) as $permutation) {
+                foreach (range(0, \count($elements) - 1) as $i) {
                     yield array_merge(
-                        array_slice($permutation, 0, $i),
+                        \array_slice($permutation, 0, $i),
                         [$elements[0]],
-                        array_slice($permutation, $i)
+                        \array_slice($permutation, $i)
                     );
                 }
             }
         }
     }
+
 }

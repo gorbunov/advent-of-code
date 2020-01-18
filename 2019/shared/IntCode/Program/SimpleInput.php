@@ -11,19 +11,9 @@ final class SimpleInput implements Input
      */
     private $inputs;
 
-    private function __construct(array $inputs)
+    public function __construct(array $inputs)
     {
         $this->inputs = $inputs;
-    }
-
-    public static function empty(): Input
-    {
-        return self::create([]);
-    }
-
-    public static function create(array $inputs): Input
-    {
-        return new self($inputs);
     }
 
     public function read(): ?int
@@ -31,7 +21,7 @@ final class SimpleInput implements Input
         return array_shift($this->inputs);
     }
 
-    public function push(int $value): Input
+    public function insert(int $value): Input
     {
         $this->inputs[] = $value;
         return $this;

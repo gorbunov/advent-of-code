@@ -3,6 +3,7 @@
 namespace IntCode;
 
 use IntCode\Program\Input;
+use IntCode\Program\Output;
 use IntCode\Program\SimpleInput;
 
 class IntCodeRunner
@@ -23,10 +24,10 @@ class IntCodeRunner
         $this->program = $program;
     }
 
-    public static function fromCodeString(string $code, Input $input): self
+    public static function fromCodeString(string $code, Input $input, Output $output = null): self
     {
         $opcodes = explode(',', $code);
-        $program = Program::createFromArray($opcodes, $input);
+        $program = Program::createFromArray($opcodes, $input, $output);
         return self::fromProgram($program);
     }
 

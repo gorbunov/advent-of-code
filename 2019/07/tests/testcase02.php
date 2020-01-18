@@ -15,7 +15,7 @@ $fixtures = [
 
 foreach ($fixtures as [$program, $phases, $expected]) {
     $phases = array_map('\intval', explode(',', $phases));
-    $stack = \Amplifier\AmplifierStack::create($program);
+    $stack = \Amplifier\AmplifierStack::createLine($program);
     $output = $stack->run($phases);
-    assert($expected === $output);
+    assert($expected === $output, sprintf("Test failed: got %d, expected %d\n", $output, $expected));
 }

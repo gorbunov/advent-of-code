@@ -4,17 +4,12 @@
 namespace IntCode\Program;
 
 
-class SimpleOutput implements Output
+final class SimpleOutput implements Output
 {
     private $outputs = [];
 
-    private function __construct()
+    public function __construct()
     {
-    }
-
-    public static function create(): Output
-    {
-        return new self();
     }
 
     public function store(int $value): Output
@@ -26,10 +21,5 @@ class SimpleOutput implements Output
     public function outputs(): array
     {
         return $this->outputs;
-    }
-
-    public function pop(): ?int
-    {
-        return array_pop($this->outputs);
     }
 }

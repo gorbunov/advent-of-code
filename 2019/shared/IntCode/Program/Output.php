@@ -7,6 +7,4 @@ interface Output
     public function store(int $value): Output;
 
     public function outputs(): array;
-
-    public function pop(): ?int;
 }
