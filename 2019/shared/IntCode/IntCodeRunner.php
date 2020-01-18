@@ -13,6 +13,10 @@ class IntCodeRunner
      * @var Program
      */
     private $program;
+    /**
+     * @var Program
+     */
+    private $source;
 
     /**
      * IntCode constructor.
@@ -21,6 +25,7 @@ class IntCodeRunner
      */
     private function __construct(Program $program)
     {
+        $this->source = $program;
         $this->program = $program;
     }
 
@@ -36,8 +41,15 @@ class IntCodeRunner
         return new self($program);
     }
 
+    private function reset(): self
+    {
+        $this->program = clone $this->source;
+        return $this;
+    }
+
     public function run(): self
     {
+        $this->reset();
         $step = 0;
         while ($this->program->running()) {
             $step++;
