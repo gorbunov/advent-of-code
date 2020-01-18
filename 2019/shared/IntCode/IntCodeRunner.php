@@ -94,6 +94,9 @@ class IntCodeRunner
         while ($this->program->running()) {
             $opcode = $this->program->opcode();
             $this->apply($opcode);
+            if (self::DEBUG) {
+                printf('Position: %d; ', $this->program()->position());
+            }
             if ($opcode instanceof OutputOpcode) {
                 return;
             }

@@ -35,6 +35,11 @@ final class Amplifier
         return $this;
     }
 
+    public function input(): Input
+    {
+        return $this->runner->program()->input();
+    }
+
     public function run(int $signal): self
     {
         $this->input()->insert($signal);
@@ -42,13 +47,13 @@ final class Amplifier
         return $this;
     }
 
-    public function input(): Input
-    {
-        return $this->runner->program()->input();
-    }
-
     public function output(): Output
     {
         return $this->runner->program()->output();
+    }
+
+    public function halted(): bool
+    {
+        return $this->runner->halted();
     }
 }

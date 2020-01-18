@@ -11,6 +11,7 @@ use function array_slice;
 
 final class AmplifierStack
 {
+    private const DEBUG = true;
     private $memory;
     /**
      * @var Amplifier[]
@@ -35,6 +36,33 @@ final class AmplifierStack
     /**
      * @param int[] $phases
      *
+     * @return int
+     */
+    public function run(array $phases): int
+    {
+        $this->configure($phases);
+        $signal = 0;
+        while (!$this->halted()) {
+            if ($this->halted()) {
+                break;
+            }
+            foreach ($this->amplifiers as $id => $amplifier) {
+                if (self::DEBUG) {
+                    printf(color_value("Amplifier #%s: \n", 'black'), $id);
+                }
+                $amplifier->run($signal);
+                $signal = $amplifier->output()->pop();
+                if (self::DEBUG) {
+                    printf("Amplifier #%d, Output: %s\n", $id, color_value($signal, 'red'));
+                }
+            }
+        }
+        return $signal;
+    }
+
+    /**
+     * @param int[] $phases
+     *
      * @return self
      */
     private function configure(array $phases): AmplifierStack
@@ -52,21 +80,18 @@ final class AmplifierStack
         return $this->amplifiers[$id];
     }
 
-    /**
-     * @param int[] $phases
-     *
-     * @return int
-     */
-    public function run(array $phases): int
+    private function halted(): bool
     {
-        $this->configure($phases);
-        $signal = 0;
         foreach ($this->amplifiers as $amplifier) {
-            $amplifier->run($signal);
-            $signal = $amplifier->output()->pop();
+            if ($amplifier->halted()) {
+                printf(color_value("ALL HALTED", 'red'));
+                return true;
+            }
         }
-        return $signal;
+        return false;
     }
+
+    // halted if last amp is halted
 
     public function permutations(array $elements): ?Generator
     {
@@ -84,5 +109,4 @@ final class AmplifierStack
             }
         }
     }
-
 }
