@@ -9,6 +9,7 @@ use function get_class;
 
 abstract class CommonOpcode implements Opcode
 {
+    public static $COLOR = 'blue';
     private $modes;
     /**
      * @var Program

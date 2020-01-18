@@ -8,6 +8,7 @@ final class InputOpcode extends CommonOpcode
 {
 
     public const OPCODE = 3;
+    public static $COLOR = 'light_green';
 
     public static function size(): int
     {

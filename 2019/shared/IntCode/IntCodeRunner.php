@@ -3,12 +3,14 @@
 namespace IntCode;
 
 use IntCode\Program\Input;
+use IntCode\Opcode\Opcode;
 use IntCode\Program\Output;
-use IntCode\Program\SimpleInput;
+use IntCode\Opcode\HaltOpcode;
+use IntCode\Opcode\OutputOpcode;
 
 class IntCodeRunner
 {
-    private const DEBUG = false;
+    private const DEBUG = true;
     /**
      * @var Program
      */
@@ -41,25 +43,24 @@ class IntCodeRunner
         return new self($program);
     }
 
-    private function reset(): self
-    {
-        $this->program = clone $this->source;
-        return $this;
-    }
-
     public function run(): self
     {
         $this->reset();
         $step = 0;
         while ($this->program->running()) {
+            if (self::DEBUG) {
+                printf('Step: %d, Position: %d; ', $step++, $this->program()->position());
+            }
             $step++;
             $opcode = $this->program->opcode();
-            if (self::DEBUG) {
-                printf("Step: %d, Opcode: %s\n", $step, $opcode);
-                printf("Program: %s\n", substr((string)$this->program, 0, 30));
-            }
-            $this->program = $opcode->apply();
+            $this->apply($opcode);
         }
+        return $this;
+    }
+
+    public function reset(): self
+    {
+        $this->program = clone $this->source;
         return $this;
     }
 
@@ -69,5 +70,38 @@ class IntCodeRunner
     public function program(): Program
     {
         return $this->program;
+    }
+
+    private function apply(Opcode $opcode): self
+    {
+        if (self::DEBUG) {
+            printf("Opcode: %s\n", $opcode);
+            $prgAarr = $this->program->toArray();
+            $stPos = max(0, $this->program()->position() - 5);
+            $beforeOpcode = \array_slice($prgAarr, $stPos, 5);
+            $size = \call_user_func([\get_class($opcode), 'size']);
+            $atOpcode = \array_slice($prgAarr, $this->program()->position(), $size);
+            $afterOpcode = \array_slice($prgAarr, $this->program->position() + $size, 5);
+            $opcodeColor = $opcode::$COLOR;
+            printf("Program: %s >> %s << %s\n", implode(',', $beforeOpcode), implode(',', color_array($atOpcode, $opcodeColor)), implode(',', $afterOpcode));
+        }
+        $this->program = $opcode->apply();
+        return $this;
+    }
+
+    public function untilOutput(): void
+    {
+        while ($this->program->running()) {
+            $opcode = $this->program->opcode();
+            $this->apply($opcode);
+            if ($opcode instanceof OutputOpcode) {
+                return;
+            }
+        }
+    }
+
+    public function halted(): bool
+    {
+        return $this->program->halted();
     }
 }

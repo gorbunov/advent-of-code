@@ -30,10 +30,11 @@ final class Amplifier
     public function configure(int $phase): self
     {
         $this->phase = $phase;
+        $this->runner->reset();
         return $this;
     }
 
-    public function run(/*int $phase, */int $signal): self
+    public function run(int $signal): self
     {
         $this->input()->insert($this->phase)->insert($signal);
         $this->runner->run();

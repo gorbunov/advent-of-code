@@ -138,4 +138,10 @@ class Program
     {
         return $this->input;
     }
+
+    public function toArray(): array
+    {
+        return $this->program;
+    }
+
 }

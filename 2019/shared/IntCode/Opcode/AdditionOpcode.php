@@ -19,7 +19,7 @@ final class AdditionOpcode extends CommonOpcode
         [$mode1, $mode2] = $this->modes();
         $operand1 = $this->program()->read($param1, $mode1);
         $operand2 = $this->program()->read($param2, $mode2);
-        $this->program()->alter($resultPosition, $operand1 + $operand2, Mode::POSITION);
+        $this->program()->alter($resultPosition, $operand1 + $operand2);
         return parent::apply();
     }
 }

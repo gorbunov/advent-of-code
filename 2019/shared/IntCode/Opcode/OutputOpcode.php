@@ -7,6 +7,12 @@ use IntCode\Program;
 final class OutputOpcode extends CommonOpcode
 {
     public const OPCODE = 4;
+    public static $COLOR = 'light_purple';
+
+    public static function size(): int
+    {
+        return 2;
+    }
 
     public function apply(): Program
     {
@@ -15,10 +21,5 @@ final class OutputOpcode extends CommonOpcode
         $value = $this->program()->read($params, $mode);
         $this->program()->output()->store($value);
         return parent::apply();
-    }
-
-    public static function size(): int
-    {
-        return 2;
     }
 }

@@ -9,6 +9,7 @@ use IntCode\Program;
 final class HaltOpcode extends CommonOpcode
 {
     public const OPCODE = 99;
+    public static $COLOR = 'red';
 
     public function apply(): Program
     {
