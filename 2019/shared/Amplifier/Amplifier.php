@@ -31,13 +31,14 @@ final class Amplifier
     {
         $this->phase = $phase;
         $this->runner->reset();
+        $this->input()->insert($phase);
         return $this;
     }
 
     public function run(int $signal): self
     {
-        $this->input()->insert($this->phase)->insert($signal);
-        $this->runner->run();
+        $this->input()->insert($signal);
+        $this->runner->untilOutput();
         return $this;
     }
 
