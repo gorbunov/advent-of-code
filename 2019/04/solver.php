@@ -1,18 +1,26 @@
 <?php declare(strict_types=1);
+
+use Validator\Validator;
+use Validator\Rules\Range;
+use Validator\Rules\DigitsCount;
+use Validator\Rules\DigitsIncrease;
+use Validator\Rules\HasDoubleDigits;
+use Validator\Rules\ExactlyDoubleDigitsGroupExists;
+
 require_once __DIR__.'/../shared/autoload.php';
 $range = file_get_contents('./range.txt');
 $range = explode('-', $range);
 $range = array_map('\intval', $range);
 
 $rules = [
-    \Validator\Rules\DigitsCount::create(6),
-    \Validator\Rules\Range::create(...$range),
-    \Validator\Rules\DigitsIncrease::create(),
-    \Validator\Rules\HasDoubleDigits::create(),
+    DigitsCount::create(6),
+    Range::create(...$range),
+    DigitsIncrease::create(),
+    HasDoubleDigits::create(),
 ];
-$validator = \Validator\Validator::create($rules);
-$rules[] = \Validator\Rules\ExactlyDoubleDigitsGroupExists::create();
-$validator2 = \Validator\Validator::create($rules);
+$validator = Validator::create($rules);
+$rules[] = ExactlyDoubleDigitsGroupExists::create();
+$validator2 = Validator::create($rules);
 $valid = 0;
 $valid2 = 0;
 for ($password = $range[0]; $password <= $range[1]; $password++) {

@@ -1,4 +1,7 @@
 <?php declare(strict_types=1);
+
+use WireGrid\Grid;
+
 require_once __DIR__.'/../../shared/autoload.php';
 $fixtures = [
     30  => [
@@ -16,7 +19,7 @@ $fixtures = [
 ];
 
 foreach ($fixtures as $expected => $wires) {
-    $grid = \WireGrid\Grid::createFromWires($wires);
+    $grid = Grid::createFromWires($wires);
     print_array_values($grid->distances_to_intersections());
     //var_dump(array_map(static function(\WireGrid\Position $position){ return (string)$position; },$grid->intersections()));
     //var_dump($grid->distances());

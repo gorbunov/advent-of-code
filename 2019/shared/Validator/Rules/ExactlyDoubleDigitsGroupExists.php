@@ -2,6 +2,8 @@
 
 namespace Validator\Rules;
 
+use function in_array;
+
 final class ExactlyDoubleDigitsGroupExists implements Validation
 {
 
@@ -9,7 +11,7 @@ final class ExactlyDoubleDigitsGroupExists implements Validation
     {
         $digits = str_split((string)$value, 1);
         $groups = self::group($digits);
-        return \in_array(2, $groups, true);
+        return in_array(2, $groups, true);
     }
 
 

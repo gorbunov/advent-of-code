@@ -1,4 +1,10 @@
 <?php declare(strict_types=1);
+
+use Validator\Validator;
+use Validator\Rules\DigitsCount;
+use Validator\Rules\DigitsIncrease;
+use Validator\Rules\HasDoubleDigits;
+
 require_once __DIR__.'/../../shared/autoload.php';
 
 $fixtures = [
@@ -10,12 +16,12 @@ $fixtures = [
     135679 => false,
 ];
 
-$validator = \Validator\Validator::create(
+$validator = Validator::create(
     [
-        \Validator\Rules\DigitsCount::create(6),
+        DigitsCount::create(6),
         // \Validator\Rules\Range::create(254032, 789860),
-        \Validator\Rules\DigitsIncrease::create(),
-        \Validator\Rules\HasDoubleDigits::create(),
+        DigitsIncrease::create(),
+        HasDoubleDigits::create(),
     ]
 );
 

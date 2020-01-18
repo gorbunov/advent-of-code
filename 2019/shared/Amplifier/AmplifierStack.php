@@ -2,8 +2,13 @@
 
 namespace Amplifier;
 
+use Generator;
+use IntCode\Program\IOPass;
 use IntCode\Program\InputFactory;
 use IntCode\Program\OutputFactory;
+
+use function count;
+use function array_slice;
 
 final class AmplifierStack
 {
@@ -41,6 +46,7 @@ final class AmplifierStack
         foreach ($phases as $phase) {
             $amp = $this->getAmp($ampId++);
             $amp->run($phase, $signal);
+            $signal = $amp->output()->outputs()[0];
         }
         return $signal;
     }
@@ -50,17 +56,17 @@ final class AmplifierStack
         return $this->amps[$id];
     }
 
-    public function permutations(array $elements): ?\Generator
+    public function permutations(array $elements): ?Generator
     {
-        if (\count($elements) <= 1) {
+        if (count($elements) <= 1) {
             yield $elements;
         } else {
-            foreach ($this->permutations(\array_slice($elements, 1)) as $permutation) {
-                foreach (range(0, \count($elements) - 1) as $i) {
+            foreach ($this->permutations(array_slice($elements, 1)) as $permutation) {
+                foreach (range(0, count($elements) - 1) as $i) {
                     yield array_merge(
-                        \array_slice($permutation, 0, $i),
+                        array_slice($permutation, 0, $i),
                         [$elements[0]],
-                        \array_slice($permutation, $i)
+                        array_slice($permutation, $i)
                     );
                 }
             }

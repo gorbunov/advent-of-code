@@ -2,8 +2,11 @@
 
 namespace WireGrid;
 
+use function count;
+
 final class Wire
 {
+    private const DEBUG = false;
     /**
      * @var Position[]
      */
@@ -72,12 +75,18 @@ final class Wire
         $lines2 = $wire->lines();
         foreach ($lines as $line) {
             foreach ($lines2 as $otherline) {
-                //printf("matching %s with %s: ", $line, $otherline);
+                if (self::DEBUG) {
+                    printf('matching %s with %s: ', $line, $otherline);
+                }
                 if ($line->intersects($otherline)) {
-                    //printf("%s × %s @ %s\n", $line, $otherline, $line->intersection($otherline));
+                    if (self::DEBUG) {
+                        printf("%s × %s @ %s\n", $line, $otherline, $line->intersection($otherline));
+                    }
                     $intersections[] = $line->intersection($otherline);
                 } else {
-                    //printf(" - no match\n");
+                    if (self::DEBUG) {
+                        printf(" - no match\n");
+                    }
                 }
             }
         }
@@ -90,7 +99,7 @@ final class Wire
     public function lines(): array
     {
         $lines = [];
-        for ($i = 0, $iMax = \count($this->points) - 1; $i < $iMax; $i++) {
+        for ($i = 0, $iMax = count($this->points) - 1; $i < $iMax; $i++) {
             $lines[] = Line::createFromPoints($this->points[$i], $this->points[$i + 1]);
         }
 
@@ -103,12 +112,16 @@ final class Wire
         $i = 0;
         foreach ($this->lines() as $line) {
             if ($line->has_point($position)) {
-                $distance+= $line->distance_to_position($position);
-                //printf("%d, %d\n",$line->distance_to_position($position), $distance);
+                $distance += $line->distance_to_position($position);
+                if (self::DEBUG) {
+                    printf("%d, %d\n", $line->distance_to_position($position), $distance);
+                }
                 return $distance;
             }
             $distance += $line->getLength();
-            //printf("%d: +%d = %d\n", $i++, $line->getLength(), $distance);
+            if (self::DEBUG) {
+                printf("%d: +%d = %d\n", $i++, $line->getLength(), $distance);
+            }
         }
         return $distance;
     }

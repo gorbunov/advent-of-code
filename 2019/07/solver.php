@@ -1,9 +1,12 @@
 <?php declare(strict_types=1);
+
+use Amplifier\AmplifierStack;
+
 require_once __DIR__ . '/../shared/autoload.php';
 
 $program = file_get_contents('./program.txt');
 
-$stack = \Amplifier\AmplifierStack::createLine($program);
+$stack = AmplifierStack::createLine($program);
 
 $max = 0;
 

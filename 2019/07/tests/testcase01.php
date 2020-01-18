@@ -1,4 +1,7 @@
 <?php declare(strict_types=1);
+
+use Amplifier\AmplifierStack;
+
 require_once __DIR__.'/../../shared/autoload.php';
 $fixtures = [
     [
@@ -20,7 +23,7 @@ $fixtures = [
 
 foreach ($fixtures as [$program, $phases, $expected]) {
     $phases = array_map('\intval', explode(',', $phases));
-    $stack = \Amplifier\AmplifierStack::createLine($program);
+    $stack = AmplifierStack::createLine($program);
     $output = $stack->run($phases);
     assert($expected === $output, sprintf("Test failed: got %d, expected %d\n", $output, $expected));
 }

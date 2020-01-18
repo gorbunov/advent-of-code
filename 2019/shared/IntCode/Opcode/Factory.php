@@ -6,6 +6,10 @@ namespace IntCode\Opcode;
 
 use IntCode\Program;
 
+use RuntimeException;
+
+use function array_slice;
+
 class Factory
 {
     private static $mapping = [
@@ -27,7 +31,7 @@ class Factory
         /** @var Opcode $class */
         $class = self::$mapping[$opcode] ?? null;
         if (!$class) {
-            throw new \RuntimeException(sprintf("Unknown OpCode: %d (%d)\n Position: %d, Program: %s\n", $opcode, $raw_opcode, $program->position(), $program));
+            throw new RuntimeException(sprintf("Unknown OpCode: %d (%d)\n Position: %d, Program: %s\n", $opcode, $raw_opcode, $program->position(), $program));
         }
         $params = self::readParams($program, $class::size());
         return $class::create($program, $modes, $params);
@@ -44,6 +48,6 @@ class Factory
 
     private static function readParams(Program $program, int $size): array
     {
-        return \array_slice($program->readAhead($size), 1); // offset 1 - opcode itself
+        return array_slice($program->readAhead($size), 1); // offset 1 - opcode itself
     }
 }

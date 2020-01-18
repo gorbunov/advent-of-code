@@ -5,6 +5,8 @@ namespace IntCode\Opcode;
 
 use IntCode\Program;
 
+use function get_class;
+
 abstract class CommonOpcode implements Opcode
 {
     private $modes;
@@ -48,7 +50,7 @@ abstract class CommonOpcode implements Opcode
     {
         $modes = sprintf('[%s]', implode(', ', $this->modes));
         $params = sprintf('(%s)', implode(', ', $this->params));
-        return sprintf('%s, size: %d; Mode: %s, Params: %s', \get_class($this), static::size(), $modes, $params);
+        return sprintf('%s, size: %d; Mode: %s, Params: %s', get_class($this), static::size(), $modes, $params);
     }
 
     public function params(): array

@@ -23,10 +23,11 @@ final class Amplifier
         return new self(IntCodeRunner::fromCodeString($program, $input, $output));
     }
 
-    public function run(int $phase, int $signal): int
+    public function run(int $phase, int $signal): self
     {
         $this->input()->insert($phase)->insert($signal);
-        return $this->runner->run()->program()->output()->outputs()[0];
+        $this->runner->run();
+        return $this;
     }
 
     public function input(): Input

@@ -7,6 +7,9 @@ use IntCode\Opcode\Opcode;
 use IntCode\Program\Input;
 use IntCode\Program\Output;
 use IntCode\Opcode\Factory;
+use IntCode\Program\InputFactory;
+
+use function array_slice;
 
 class Program
 {
@@ -40,10 +43,11 @@ class Program
         $this->output = $output;
     }
 
-    public static function createFromArray(array $program, Input $input, ?Output $output = null): Program
+    public static function createFromArray(array $program, Input $input = null, Output $output = null): Program
     {
         $program = array_map('\intval', $program);
         $output = $output ?? Program\OutputFactory::create();
+        $input = $input ?? InputFactory::empty();
         return new self($program, $input, $output);
     }
 
@@ -71,7 +75,7 @@ class Program
 
     public function readAhead(int $count): array
     {
-        return \array_slice($this->program, $this->position, $count);
+        return array_slice($this->program, $this->position, $count);
     }
 
     public function current(): int
@@ -79,7 +83,8 @@ class Program
         return $this->program[$this->position];
     }
 
-    public function alter(int $position, int $value, int $mode = Mode::POSITION): self
+    // public function alter(int $position, int $value, int $mode = Mode::POSITION): self
+    public function alter(int $position, int $value): self
     {
         $this->program[$position] = $value;
         return $this;
@@ -104,11 +109,6 @@ class Program
     public function opcode(): Opcode
     {
         return Factory::create($this);
-    }
-
-    public function toArray(): array
-    {
-        return $this->program;
     }
 
     public function output(): Output
