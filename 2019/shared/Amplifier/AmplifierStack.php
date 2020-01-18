@@ -41,6 +41,7 @@ final class AmplifierStack
         foreach ($phases as $phase) {
             $amp = $this->getAmp($ampId++);
             $amp->run($phase, $signal);
+            $signal = $amp->output()->outputs()[0];
         }
         return $signal;
     }
