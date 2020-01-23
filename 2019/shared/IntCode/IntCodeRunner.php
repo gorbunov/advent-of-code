@@ -61,8 +61,6 @@ class IntCodeRunner
     public function reset(): self
     {
         $this->program = clone $this->source;
-        $this->program->input()->reset();
-        $this->program()->output()->reset();
         return $this;
     }
 

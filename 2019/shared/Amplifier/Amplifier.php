@@ -31,6 +31,9 @@ final class Amplifier
     {
         $this->phase = $phase;
         $this->runner->reset();
+        $this->runner->program()->input()->reset();
+        $this->runner->program()->output()->reset();
+
         $this->input()->insert($phase);
         return $this;
     }

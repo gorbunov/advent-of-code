@@ -7,7 +7,7 @@ require_once __DIR__.'/../shared/autoload.php';
 
 $program = trim(file_get_contents('./program.txt', false));
 
-$cpu = IntCodeComputer::load($program, Program\InputFactory::empty());
+$cpu = IntCodeComputer::load($program);
 
 $result = $cpu->run(
     static function (Program $program) {

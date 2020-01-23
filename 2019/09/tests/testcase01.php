@@ -10,7 +10,7 @@ $fixtures = [
 foreach ($fixtures as $i => $fixture) {
     $in = $fixture['in']; $out = $fixture['out'];
     printf("Running program #%d\n", $i);
-    $cpu = \IntCode\IntCodeComputer::load($in, \IntCode\Program\InputFactory::empty());
+    $cpu = \IntCode\IntCodeComputer::load($in);
     $cpu = $cpu->run();
     $output = $cpu->output()->outputs();
     print_array_values($output);

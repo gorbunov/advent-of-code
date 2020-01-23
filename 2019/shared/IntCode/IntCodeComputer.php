@@ -4,7 +4,6 @@ namespace IntCode;
 
 use Closure;
 use IntCode\Program\Input;
-use IntCode\Program\SimpleInput;
 
 class IntCodeComputer
 {
@@ -13,16 +12,20 @@ class IntCodeComputer
      */
     private $memory;
 
-    private function __construct(Program $program)
+    private function __construct(string $memory)
     {
-        $this->memory = $program;
+        $this->memory = $memory;
     }
 
-    public static function load(string $memory, Input $input): self
+    public static function load(string $memory): self
     {
-        $opcodes = explode(',', $memory);
-        $program = Program::createFromArray($opcodes, $input);
-        return new self($program);
+        return new self($memory);
+    }
+
+    private function reboot(): Program
+    {
+        $opcodes = explode(',', $this->memory);
+        return Program::createFromArray($opcodes);
     }
 
     public function run(?Closure $bootloader = null): Program
@@ -32,7 +35,7 @@ class IntCodeComputer
 
     private function boot(?Closure $bootloader): IntCodeRunner
     {
-        $program = clone $this->memory;
+        $program = $this->reboot();
         if ($bootloader) {
             $program = $bootloader($program);
         }
