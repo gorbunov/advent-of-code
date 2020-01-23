@@ -19,6 +19,7 @@ class Program
     private $program;
     private $position = 0;
     private $halted = false;
+    private $relativeBase = 0;
 
     /**
      * @var Input
@@ -65,12 +66,23 @@ class Program
 
     public function read(int $argument, int $mode = Mode::POSITION): int
     {
-        return ($mode === Mode::POSITION) ? $this->readAtPosition($argument) : $argument;
+        if (\in_array($mode, [Mode::POSITION, Mode::RELATIVE], true)) {
+            if ($mode === Mode::RELATIVE) {
+                $argument = $this->relativePosition($argument);
+            }
+            return $this->readAtPosition($argument);
+        }
+        return $argument;
+    }
+
+    public function relativeBase(): int
+    {
+        return $this->relativeBase;
     }
 
     private function readAtPosition(int $position): int
     {
-        return $this->program[$position];
+        return $this->program[$position] ?? 0;
     }
 
     public function readAhead(int $count): array
@@ -83,11 +95,18 @@ class Program
         return $this->program[$this->position];
     }
 
-    // public function alter(int $position, int $value, int $mode = Mode::POSITION): self
-    public function alter(int $position, int $value): self
+    public function alter(int $position, int $value, $mode = Mode::POSITION): self
     {
+        if ($mode === Mode::RELATIVE) {
+            $position = $this->relativePosition($position);
+        }
         $this->program[$position] = $value;
         return $this;
+    }
+
+    public function relativePosition(int $position): int
+    {
+        return $this->relativeBase() + $position;
     }
 
     public function halt(): self
@@ -142,6 +161,12 @@ class Program
     public function toArray(): array
     {
         return $this->program;
+    }
+
+    public function moveRelativeBase(int $amount): self
+    {
+        $this->relativeBase += $amount;
+        return $this;
     }
 
 }

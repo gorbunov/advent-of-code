@@ -5,7 +5,6 @@ namespace IntCode\Opcode;
 
 
 use IntCode\Program;
-
 use RuntimeException;
 
 use function array_slice;
@@ -21,6 +20,7 @@ class Factory
         JumpIfFalseOpcode::OPCODE    => JumpIfFalseOpcode::class,
         LessThanOpcode::OPCODE       => LessThanOpcode::class,
         EqualsOpcode::OPCODE         => EqualsOpcode::class,
+        RelativeBaseOpcode::OPCODE   => RelativeBaseOpcode::class,
         HaltOpcode::OPCODE           => HaltOpcode::class,
     ];
 

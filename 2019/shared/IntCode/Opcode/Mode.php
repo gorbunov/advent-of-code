@@ -8,4 +8,5 @@ final class Mode
 {
     public const POSITION = 0;
     public const IMMEDIATE = 1;
+    public const RELATIVE = 2;
 }

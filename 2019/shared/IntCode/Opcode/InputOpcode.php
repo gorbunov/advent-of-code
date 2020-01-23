@@ -18,9 +18,10 @@ final class InputOpcode extends CommonOpcode
     public function apply(): Program
     {
         $input = $this->program()->input()->read();
-        //printf("READ %d\n", $input);
+        printf("READ %d\n", $input);
         [$position] = $this->params();
-        $this->program()->alter($position, $input);
+        [$mode] = $this->modes();
+        $this->program()->alter($position, $input, $mode);
         return parent::apply();
     }
 
