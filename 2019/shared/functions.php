@@ -39,6 +39,9 @@ function color_array(array $values, $color): array
 {
     return array_map(
         static function ($value) use ($color) {
+            if (is_array($value)) {
+                $value = implode(', ', color_array($value, $color));
+            }
             return color_value((string)$value, $color);
         },
         $values
