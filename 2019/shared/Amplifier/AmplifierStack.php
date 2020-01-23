@@ -51,6 +51,9 @@ final class AmplifierStack
                     printf(color_value("Amplifier #%s: \n", 'black'), $id);
                 }
                 $amplifier->run($signal);
+                if ($amplifier->halted()) {
+                    break;
+                }
                 $signal = $amplifier->output()->pop();
                 if (self::DEBUG) {
                     printf("Amplifier #%d, Output: %s\n", $id, color_value($signal, 'red'));
@@ -84,14 +87,11 @@ final class AmplifierStack
     {
         foreach ($this->amplifiers as $amplifier) {
             if ($amplifier->halted()) {
-                printf(color_value("ALL HALTED", 'red'));
                 return true;
             }
         }
         return false;
     }
-
-    // halted if last amp is halted
 
     public function permutations(array $elements): ?Generator
     {

@@ -27,4 +27,10 @@ final class SimpleOutput implements Output
     {
         return array_shift($this->outputs);
     }
+
+    public function reset(): Output
+    {
+        $this->outputs = [];
+        return $this;
+    }
 }

@@ -61,6 +61,8 @@ class IntCodeRunner
     public function reset(): self
     {
         $this->program = clone $this->source;
+        $this->program->input()->reset();
+        $this->program()->output()->reset();
         return $this;
     }
 
@@ -98,6 +100,9 @@ class IntCodeRunner
                 printf('Position: %d; ', $this->program()->position());
             }
             if ($opcode instanceof OutputOpcode) {
+                return;
+            }
+            if ($opcode instanceof HaltOpcode) {
                 return;
             }
         }

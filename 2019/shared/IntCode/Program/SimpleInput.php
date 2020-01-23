@@ -26,4 +26,10 @@ final class SimpleInput implements Input
         $this->inputs[] = $value;
         return $this;
     }
+
+    public function reset(): Input
+    {
+        $this->inputs = [];
+        return $this;
+    }
 }

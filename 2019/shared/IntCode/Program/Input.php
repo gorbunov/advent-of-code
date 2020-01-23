@@ -6,4 +6,5 @@ interface Input
 {
     public function read(): ?int;
     public function insert(int $value): Input;
+    public function reset(): Input;
 }
