@@ -16,3 +16,5 @@ foreach ($info as $pos => $layer) {
 }
 
 printf("Image Checksum: %d\n", $found[1] * $found[2]);
+
+print_image_preview($image->decode());

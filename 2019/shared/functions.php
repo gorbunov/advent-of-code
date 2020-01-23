@@ -47,3 +47,18 @@ function color_array(array $values, $color): array
         $values
     );
 }
+
+function print_image_preview(array $data)
+{
+    $colormap = [
+        0 => 'white',
+        1 => 'black',
+    ];
+
+    foreach ($data as $row) {
+        foreach ($row as $symbol) {
+            printf('%s', color_value('█', $colormap[$symbol]));
+        }
+        echo PHP_EOL;
+    }
+}

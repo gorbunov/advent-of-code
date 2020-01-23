@@ -28,7 +28,12 @@ class SIFImage
     private static function splitLayers(int $width, int $height, string $data): array
     {
         $bytes = $width * $height;
-        return str_split($data, $bytes);
+        $layers = str_split($data, $bytes);
+        $split = [];
+        foreach ($layers as $layer) {
+            $split[] = str_split($layer);
+        }
+        return $split;
     }
 
     public static function create(int $width, int $height, string $data): SIFImage
@@ -46,10 +51,28 @@ class SIFImage
         return $info;
     }
 
-    private static function digitsPerLayer(string $layer): array
+    private static function digitsPerLayer(array $layer): array
     {
         $layer_info = array_combine(range(0, 9), array_fill(0, 10, 0));
-        $counted = array_count_values(str_split($layer));
+        $counted = array_count_values($layer);
         return array_replace($layer_info, $counted);
+    }
+
+    public function decode(): array
+    {
+        for ($pos = 0; $pos < $this->width * $this->height; $pos++) {
+            $decoded[] = $this->getTopColoredPixelAtPos($pos);
+        }
+        return array_chunk($decoded, $this->width);
+    }
+
+    private function getTopColoredPixelAtPos(int $pos): int
+    {
+        foreach ($this->layers as $layer) {
+            $symbol = (int)$layer[$pos];
+            if (\in_array($symbol, [0, 1], true)) {
+                return $symbol;
+            }
+        }
     }
 }
