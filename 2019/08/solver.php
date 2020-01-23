@@ -8,9 +8,6 @@ $info = $image->getLayersDigitsCount();
 $min = 25 * 6; // max layer size
 $found = [];
 foreach ($info as $pos => $layer) {
-    printf('Layer %d:', $pos);
-    print_array_values(array_keys($layer));
-    print_array_values($layer);
     // less 0-es than other layer
     if ($layer[0] <= $min) {
         $min = $layer[0];
