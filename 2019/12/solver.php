@@ -5,4 +5,5 @@ $system = \Gravity\System::load($system);
 
 $system->simulate(1000);
 
-printf("%s\nTotal Energy: %6d\n", $system, $system->energy());
+printf("%s\nTotal Energy at step 1000: %6d\n", $system, $system->energy());
+printf("Cycle size: %d\n", $system->cycleSize());

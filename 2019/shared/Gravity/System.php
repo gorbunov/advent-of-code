@@ -10,6 +10,10 @@ final class System
     private $bodies = [];
     private $pairs;
 
+    private $startEnergy;
+    /** @var Body[] */
+    private $initialState;
+
     /**
      * System constructor.
      *
@@ -23,8 +27,10 @@ final class System
                 $pairs[] = [$body, $known];
             }
             $this->bodies[] = $body;
+            $this->initialState[] = Body::fromBody($body);
         }
         $this->pairs = $pairs;
+        $this->startEnergy = $this->energy();
     }
 
     public static function load(array $lines): System
@@ -70,7 +76,7 @@ final class System
         foreach ($this->bodies as $i => $body) {
             $display .= sprintf("\nBody #%d: %s", $i, $body);
         }
-        $display.= sprintf("\n Total energy: %5d\n", $this->energy());
+        $display .= sprintf("\n Total energy: %5d\n", $this->energy());
         return $display;
     }
 
@@ -108,5 +114,78 @@ final class System
             $energy += $body->energy();
         }
         return $energy;
+    }
+
+    public function stablize()
+    {
+        do {
+            $this->forward();
+        } while (!$this->matchedInitialState());
+        return $this;
+    }
+
+    public function matchedInitialState(): bool
+    {
+        if ($this->startEnergy !== $this->energy()) {
+            return false;
+        }
+        /**
+         * @var int  $key
+         * @var Body $body
+         */
+        foreach ($this->bodies as $key => $body) {
+            if (!$body->equals($this->initialState[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function matchedOnAxis(int $axis): bool
+    {
+        /**
+         * @var Body $body
+         */
+        foreach ($this->bodies as $key => $body) {
+            if (!$body->axisEqual($this->initialState[$key], $axis)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function matchedOnAnyAxis(): bool
+    {
+        foreach (range(0, 2) as $axis) {
+            if ($this->matchedOnAxis($axis)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function axisPeriods(): array
+    {
+        $matched = [];
+        do {
+            $this->forward();
+            if ($this->matchedOnAnyAxis()) {
+                foreach (range(0,2) as $axis) {
+                    if ($this->matchedOnAxis($axis)) {
+                        if (!isset($matched[$axis])) {
+                            $matched[$axis] = $this->time();
+                        }
+                    }
+                }
+            }
+        } while (count($matched) < 3);
+
+        return $matched;
+    }
+
+    public function cycleSize(): int
+    {
+        return lcm($this->axisPeriods());
     }
 }

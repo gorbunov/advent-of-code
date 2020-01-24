@@ -8,3 +8,4 @@ for ($time = 0; $time < 10; $time++) {
     $system->forward();
     printf("\n\nTime: %d, System: %s", $system->time(), $system);
 }
+

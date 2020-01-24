@@ -62,3 +62,15 @@ function print_image_preview(array $data)
         echo PHP_EOL;
     }
 }
+
+function gcd(int $a, int $b): int
+{
+    if ($b === 0) {
+        return $a;
+    }
+    return gcd($b, $a % $b);
+}
+
+function lcm($nums): int {
+    return array_reduce($nums, static function ($a, $b) { return ($a * $b) / gcd($a, $b); }, 1);
+}

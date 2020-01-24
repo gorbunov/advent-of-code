@@ -68,5 +68,15 @@ final class Position
         return sprintf('<x=%4d, y=%4d, z=%4d>', $this->x, $this->y, $this->z);
     }
 
+    public function equals(Position $position): bool
+    {
+        return $position->x === $this->x
+            && $position->y === $this->y
+            && $position->z === $this->z;
+    }
 
+    public function axis(): array
+    {
+        return [$this->x, $this->y, $this->z];
+    }
 }
