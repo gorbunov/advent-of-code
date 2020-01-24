@@ -66,6 +66,18 @@ final class System
     public function forward(): self
     {
         $this->time++;
+        /**
+         * @var Body $body1
+         * @var Body $body2
+         */
+        foreach ($this->pairs as [$body1, $body2]) {
+            $body1->applyBodyGravity($body2);
+            $body2->applyBodyGravity($body1);
+        }
+        /** @var Body $body */
+        foreach ($this->bodies as $body) {
+            $body->applyVelocity();
+        }
         return $this;
     }
 

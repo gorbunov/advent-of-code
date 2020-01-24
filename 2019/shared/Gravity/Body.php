@@ -24,11 +24,6 @@ final class Body
         return new self(Position::create($x, $y, $z));
     }
 
-    public function position(): Position
-    {
-        return $this->position;
-    }
-
     public function velocity(): Position
     {
         return $this->velocity;
@@ -39,9 +34,9 @@ final class Body
         return sprintf("pos=%s \t\tvel=%s\t\t\tkin=%d,\tpot=%d,\ttot=%d", $this->position, $this->velocity, $this->kinetic(), $this->potential(), $this->energy());
     }
 
-    public function energy(): int
+    public function kinetic(): int
     {
-        return $this->potential() * $this->kinetic();
+        return abs($this->velocity->x()) + abs($this->velocity->y()) + abs($this->velocity->z());
     }
 
     public function potential(): int
@@ -49,8 +44,30 @@ final class Body
         return abs($this->position->x()) + abs($this->position->y()) + abs($this->position->z());
     }
 
-    public function kinetic(): int
+    public function energy(): int
     {
-        return abs($this->velocity->x()) + abs($this->velocity->y()) + abs($this->velocity->z());
+        return $this->potential() * $this->kinetic();
+    }
+
+    public function applyBodyGravity(Body $body): self
+    {
+        $this->velocity->modify(
+            $body->position->x() <=> $this->position()->x(),
+            $body->position->y() <=> $this->position()->y(),
+            $body->position->z() <=> $this->position()->z(),
+            );
+
+        return $this;
+    }
+
+    public function position(): Position
+    {
+        return $this->position;
+    }
+
+    public function applyVelocity(): self
+    {
+        $this->position->modify($this->velocity->x(), $this->velocity->y(), $this->velocity->z());
+        return $this;
     }
 }

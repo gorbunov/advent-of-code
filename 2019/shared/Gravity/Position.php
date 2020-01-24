@@ -55,9 +55,17 @@ final class Position
         return $this->z;
     }
 
+    public function modify(int $offsetX, int $offsetY, int $offsetZ): self
+    {
+        $this->x += $offsetX;
+        $this->y += $offsetY;
+        $this->z += $offsetZ;
+        return $this;
+    }
+
     public function __toString()
     {
-        return sprintf('<x=%d,y=%d,z=%d>', $this->x, $this->y, $this->z);
+        return sprintf('<x=%4d, y=%4d, z=%4d>', $this->x, $this->y, $this->z);
     }
 
 
