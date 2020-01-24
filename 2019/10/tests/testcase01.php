@@ -18,12 +18,3 @@ foreach ($fixtures as $number => $fixture) {
         printf("Best location is %s, with %d detections\n", ...$best);
     }
 }
-
-/*
-foreach ($map->asteroids() as $asteroid) {
-    printf('Asteroid: %s;', $asteroid);
-    printf("Detected: %d\n", $map->uniqueAnglesFrom($asteroid));
-}
-*/
-//var_dump(\Asteroids\Position::create(3, 4)->angle(\Asteroids\Position::create(1, 0)));
-//var_dump(\Asteroids\Position::create(3, 4)->angle(\Asteroids\Position::create(2, 2)));

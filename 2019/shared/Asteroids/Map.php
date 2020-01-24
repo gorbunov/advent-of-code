@@ -4,6 +4,7 @@ namespace Asteroids;
 
 final class Map
 {
+    public const DEBUG = true;
     /**
      * @var Position[]
      */
@@ -30,16 +31,6 @@ final class Map
             }
         }
         return new self($asteroids);
-    }
-
-    public function asteroids(): array
-    {
-        return $this->asteroids;
-    }
-
-    public function isAnglesMatch(float $angle, float $other): bool
-    {
-        return (abs($angle - $other) < PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -78,6 +69,36 @@ final class Map
             }
             $angles[] = $position->angle($asteroid);
         }
+        return $angles;
+    }
+
+    public function vaporize(Position $position): array
+    {
+        $vaporization = [];
+        $iteration = 0;
+        $asteroids = $this->angleSortedAsteroids($position);
+        while (!empty($asteroids)) {
+            $laserAt = -1;
+            foreach ($asteroids as $asteroidId => &$angle) {
+                if ($angle === $laserAt) {
+                    continue;
+                }
+
+                $laserAt = $angle;
+                if (self::DEBUG) {
+                    printf("Destroying %d, at angle %0.4f, position: %s\n", $iteration++, $angle, $this->asteroids[$asteroidId]);
+                }
+                $vaporization[$iteration] = $this->asteroids[$asteroidId];
+                unset($asteroids[$asteroidId]);
+            }
+        }
+        return $vaporization;
+    }
+
+    public function angleSortedAsteroids(Position $position): array
+    {
+        $angles = $this->anglesToAsteroidsFrom($position);
+        asort($angles, SORT_DESC | SORT_NUMERIC);
         return $angles;
     }
 }

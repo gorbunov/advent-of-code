@@ -51,4 +51,9 @@ final class Position
     {
         return sprintf('(%d,%d)', $this->x, $this->y);
     }
+
+    public function distance(Position $asteroid): float
+    {
+        return sqrt(($this->x - $asteroid->x()) ** 2 + ($this->y - $asteroid->y()) ** 2);
+    }
 }
