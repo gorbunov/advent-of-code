@@ -51,7 +51,6 @@ class IntCodeRunner
             if (self::DEBUG) {
                 printf('Step: %d, Position: %d; ', $step++, $this->program()->position());
             }
-            $step++;
             $opcode = $this->program->opcode();
             $this->apply($opcode);
         }
@@ -78,7 +77,7 @@ class IntCodeRunner
             printf("Opcode: %s\n", $opcode);
             $prgAarr = $this->program->toArray();
             $stPos = max(0, $this->program()->position() - 5);
-            $beforeOpcode = \array_slice($prgAarr, $stPos, 5);
+            $beforeOpcode = \array_slice($prgAarr, $stPos, min(5, $this->program->position() - $stPos));
             $size = \call_user_func([\get_class($opcode), 'size']);
             $atOpcode = \array_slice($prgAarr, $this->program()->position(), $size);
             $afterOpcode = \array_slice($prgAarr, $this->program->position() + $size, 5);
@@ -89,7 +88,11 @@ class IntCodeRunner
         return $this;
     }
 
-    public function untilOutput(): void
+    /**
+     * @return bool is_halted - true, if halted
+     * @noinspection MultipleReturnStatementsInspection
+     */
+    public function untilOutput(): bool
     {
         while ($this->program->running()) {
             $opcode = $this->program->opcode();
@@ -98,12 +101,13 @@ class IntCodeRunner
                 printf('Position: %d; ', $this->program()->position());
             }
             if ($opcode instanceof OutputOpcode) {
-                return;
+                return false;
             }
             if ($opcode instanceof HaltOpcode) {
-                return;
+                return true;
             }
         }
+        return true;
     }
 
     public function halted(): bool
