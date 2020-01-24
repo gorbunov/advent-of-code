@@ -31,9 +31,9 @@ final class PainterRobot
         $this->hull = $hull;
     }
 
-    public static function create(string $program): PainterRobot
+    public static function create(string $program, int $startColor = 0): PainterRobot
     {
-        $hull = Hull::create();
+        $hull = Hull::create($startColor);
         return new self(Program::createFromArray(explode(',', $program)), $hull);
     }
 

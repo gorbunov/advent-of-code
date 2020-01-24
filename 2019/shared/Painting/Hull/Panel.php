@@ -23,17 +23,17 @@ class Panel
      */
     private $painted;
 
-    private function __construct(int $x, int $y)
+    private function __construct(int $x, int $y, $startColor)
     {
         $this->x = $x;
         $this->y = $y;
         $this->painted = 0;
-        $this->color = 0;
+        $this->color = $startColor;
     }
 
-    public static function create(int $x, int $y): Panel
+    public static function create(int $x, int $y, $startColor = 0): Panel
     {
-        return new self($x, $y);
+        return new self($x, $y, $startColor);
     }
 
     public function x(): int
