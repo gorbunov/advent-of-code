@@ -6,6 +6,7 @@ namespace Gravity;
 final class System
 {
     private $time = 0;
+    /** @var Body */
     private $bodies = [];
     private $pairs;
 
@@ -63,6 +64,24 @@ final class System
         return $this->time;
     }
 
+    public function __toString()
+    {
+        $display = '';
+        foreach ($this->bodies as $i => $body) {
+            $display .= sprintf("\nBody #%d: %s", $i, $body);
+        }
+        $display.= sprintf("\n Total energy: %5d\n", $this->energy());
+        return $display;
+    }
+
+    public function simulate(int $steps): self
+    {
+        for ($i = 0; $i < $steps; $i++) {
+            $this->forward();
+        }
+        return $this;
+    }
+
     public function forward(): self
     {
         $this->time++;
@@ -81,12 +100,13 @@ final class System
         return $this;
     }
 
-    public function __toString()
+    public function energy(): int
     {
-        $display = '';
-        foreach ($this->bodies as $i => $body) {
-            $display .= sprintf("\nBody #%d: %s", $i, $body);
+        $energy = 0;
+        /** @var Body $body */
+        foreach ($this->bodies as $body) {
+            $energy += $body->energy();
         }
-        return $display;
+        return $energy;
     }
 }
