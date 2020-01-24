@@ -10,7 +10,7 @@ use IntCode\Opcode\OutputOpcode;
 
 class IntCodeRunner
 {
-    private const DEBUG = true;
+    private const DEBUG = false;
     /**
      * @var Program
      */

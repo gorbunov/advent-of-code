@@ -17,6 +17,9 @@ final class Screen
     private $display;
     private $tiles;
     private $counts;
+    private $score = 0;
+    private $paddle = -33;
+    private $ball = -77;
 
     public static function create(): self
     {
@@ -32,11 +35,26 @@ final class Screen
         }
     }
 
-    public function draw(int $x, int $y, int $tile)
+    public function draw(int $x, int $y, int $tile): self
     {
+        if (($x === -1) && $y === 0) {
+            return $this->updateScore($tile);
+        }
         $this->display[$y][$x] = self::$mapping[$tile];
         $this->tiles[$y][$x] = $tile;
         $this->counts[$tile] += 1;
+        if ($tile === 3) {
+            $this->paddle = $x;
+        }
+        if ($tile === 4) {
+            $this->ball = $x;
+        }
+        return $this;
+    }
+
+    private function updateScore(int $score): self
+    {
+        $this->score = $score;
         return $this;
     }
 
@@ -52,5 +70,25 @@ final class Screen
     public function counts(): array
     {
         return $this->counts;
+    }
+
+    public function score(): int
+    {
+        return $this->score;
+    }
+
+    public function blocks(): int
+    {
+        return $this->counts[2];
+    }
+
+    public function ball(): int
+    {
+        return $this->ball;
+    }
+
+    public function paddle(): int
+    {
+        return $this->paddle;
     }
 }
