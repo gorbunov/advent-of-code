@@ -64,6 +64,6 @@ final class Formulae
             $this->requirements
         );
 
-        return [$amount * $batches, $recepie];
+        return [$this->quantity * $batches, $recepie];
     }
 }

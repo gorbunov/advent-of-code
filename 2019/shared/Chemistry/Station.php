@@ -4,6 +4,7 @@ namespace Chemistry;
 
 final class Station
 {
+    private const DEBUG = false;
     /**
      * @var Formulae[]
      */
@@ -22,12 +23,31 @@ final class Station
     private function __construct(array $formulas)
     {
         $this->formulas = $formulas;
+        $this->storage = Storage::create();
     }
 
     public function mix(string $element, int $amount)
     {
+        if ($element === 'ORE') {
+            return $this;
+        }
         $formulae = $this->formulas[$element];
-        return $formulae->produce($amount);
-        var_dump($formulae);
+        [$produced, $requirements] = $formulae->produce($amount);
+        if (self::DEBUG) {
+            printf("Producing %s, recipe quantity: %d, requested: %d, created: %d\n", $element, $formulae->quantity(), $amount, $produced);
+        }
+        $this->storage->store($element, $produced);
+        foreach ($requirements as $reqElement => $reqAmount) {
+            $needed = $this->storage->consume($reqElement, $reqAmount);
+            if ($needed < 0) {
+                $this->mix($reqElement, -1 * $needed);
+            }
+        }
+        return $this;
+    }
+
+    public function storage(): Storage
+    {
+        return $this->storage;
     }
 }

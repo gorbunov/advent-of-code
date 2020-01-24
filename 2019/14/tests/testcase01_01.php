@@ -10,7 +10,7 @@ $fixtures = [
 
 foreach ($fixtures as $caseId => $expected) {
     $lines = file(sprintf('./testcase01_%02d.txt', $caseId), FILE_IGNORE_NEW_LINES);
-    $station = \Chemistry\Station::create($lines);
-    var_dump($station->mix('FUEL', 1));
-    die;
+    $station = \Chemistry\Station::create($lines)->mix('FUEL', 1);
+    $ore = $station->storage->get('ORE');
+    assert($expected === $ore * -1);
 }
