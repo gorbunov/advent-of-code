@@ -8,9 +8,6 @@ use IntCode\IntCodeRunner;
 
 final class RepairDroid
 {
-    private const STATUS_WALL = 0;
-    private const STATUS_MOVED = 1;
-    private const STATUS_FOUND = 2;
     /**
      * @var IntCodeRunner
      */
@@ -19,6 +16,10 @@ final class RepairDroid
      * @var DroidController
      */
     private $controller;
+    /**
+     * @var AreaMap
+     */
+    private $map;
 
     private function __construct(IntCodeRunner $runner, DroidController $controller, AreaMap $map)
     {
@@ -30,18 +31,23 @@ final class RepairDroid
     public static function create(string $program): RepairDroid
     {
         $map = AreaMap::create();
-        $controller = DroidController::create();
+        $controller = DroidController::create($map);
         return new self(IntCodeRunner::fromCodeString($program, $controller), $controller, $map);
     }
 
     public function run(): self
     {
+        $status = 1;
+        $step = 0;
+        printf("Starting:\nState: %s\n", $this->controller);
         do {
+            printf('Move: %s; ', Direction::name($this->controller->direction()));
+            $step++;
             $this->runner->untilOutput();
             $status = $this->status();
             $this->controller->status($status);
-            printf("Movement status: %d\n", $status);
-        } while ($status !== self::STATUS_FOUND);
+            printf('Step: %3d; Status: %d:[%s] Now: %s', $step, $status, AreaMap::sprite($status), $this->controller);
+        } while (($status !== AreaMap::FOUND) && $step < 20);
         return $this;
     }
 
@@ -49,4 +55,10 @@ final class RepairDroid
     {
         return $this->runner->program()->output()->pop();
     }
+
+    public function map(): AreaMap
+    {
+        return $this->map;
+    }
+
 }

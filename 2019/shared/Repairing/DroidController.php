@@ -8,18 +8,30 @@ use IntCode\Program\Input;
 
 final class DroidController implements Input
 {
-    public static function create(): DroidController
+    private $direction = Direction::NORTH;
+    /**
+     * @var AreaMap
+     */
+    private $map;
+    /**
+     * @var Position
+     */
+    private $position;
+
+    private function __construct(AreaMap $map)
     {
-        return new self();
+        $this->map = $map;
+        $this->position = Position::create(25, 25);
+    }
+
+    public static function create(AreaMap $map): DroidController
+    {
+        return new self($map);
     }
 
     public function read(): ?int
     {
-        try {
-            return random_int(1, 4);
-        } catch (\Exception $e) {
-            return 0;
-        }
+        return $this->direction;
     }
 
     public function insert(int $value): Input
@@ -32,8 +44,27 @@ final class DroidController implements Input
         return $this;
     }
 
-    public function status(int $status)
+    public function status(int $status): self
     {
+        switch ($status) {
+            case AreaMap::EMPTY:
+                $this->position->move($this->direction);
+                break;
+            case AreaMap::WALL:
+                $this->direction = Direction::turn($this->direction);
+                break;
+        }
+        $this->map->mark($this->position, $status);
+        return $this;
+    }
 
+    public function __toString()
+    {
+        return sprintf("POS: %s, Turned: %s\n", $this->position, Direction::name($this->direction));
+    }
+
+    public function direction(): int
+    {
+        return $this->direction;
     }
 }

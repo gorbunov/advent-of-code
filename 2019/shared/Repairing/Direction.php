@@ -10,4 +10,28 @@ final class Direction
     public const SOUTH = 2;
     public const WEST = 3;
     public const EAST = 4;
+
+    private static $turns = [
+        self::NORTH => self::EAST,
+        self::EAST  => self::SOUTH,
+        self::SOUTH => self::WEST,
+        self::WEST  => self::NORTH,
+    ];
+
+    private static $names = [
+        self::NORTH => 'N',
+        self::SOUTH => 'S',
+        self::WEST => 'W',
+        self::EAST => 'E'
+    ];
+
+    public static function turn(int $direction): int
+    {
+        return self::$turns[$direction];
+    }
+
+    public static function name(int $direction): string
+    {
+        return self::$names[$direction];
+    }
 }
