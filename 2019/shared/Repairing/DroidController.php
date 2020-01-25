@@ -67,4 +67,5 @@ final class DroidController implements Input
     {
         return $this->direction;
     }
+
 }

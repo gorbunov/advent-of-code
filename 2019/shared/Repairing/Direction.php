@@ -18,11 +18,19 @@ final class Direction
         self::WEST  => self::NORTH,
     ];
 
+    private static $rightTurns = [
+        self::NORTH => self::WEST,
+        self::EAST  => self::NORTH,
+        self::SOUTH => self::EAST,
+        self::WEST  => self::SOUTH,
+    ];
+
+
     private static $names = [
         self::NORTH => 'N',
         self::SOUTH => 'S',
-        self::WEST => 'W',
-        self::EAST => 'E'
+        self::WEST  => 'W',
+        self::EAST  => 'E',
     ];
 
     public static function turn(int $direction): int
