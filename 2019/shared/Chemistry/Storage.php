@@ -43,4 +43,10 @@ final class Storage
     {
         return $this->stored[$element]??0;
     }
+
+    public function reset(): Storage
+    {
+        $this->stored = [];
+        return $this;
+    }
 }

@@ -10,6 +10,12 @@ final class Station
      */
     private $formulas;
 
+    private function __construct(array $formulas)
+    {
+        $this->formulas = $formulas;
+        $this->storage = Storage::create();
+    }
+
     public static function create(array $lines): Station
     {
         $formulas = [];
@@ -18,12 +24,6 @@ final class Station
             $formulas[$formulae->element()] = $formulae;
         }
         return new self($formulas);
-    }
-
-    private function __construct(array $formulas)
-    {
-        $this->formulas = $formulas;
-        $this->storage = Storage::create();
     }
 
     public function mix(string $element, int $amount)
@@ -49,5 +49,11 @@ final class Station
     public function storage(): Storage
     {
         return $this->storage;
+    }
+
+    public function reset(): Station
+    {
+        $this->storage->reset();
+        return $this;
     }
 }
