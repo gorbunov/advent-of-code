@@ -9,6 +9,10 @@ final class Station
      * @var Formulae[]
      */
     private $formulas;
+    /**
+     * @var Storage
+     */
+    private $storage;
 
     public static function create(array $lines): Station
     {
@@ -49,5 +53,12 @@ final class Station
     public function storage(): Storage
     {
         return $this->storage;
+    }
+
+    public function produce(string $string)
+    {
+        while ($this->storage->get('ORE') > 0) {
+            $this->mix('FUEL', 1);
+        }
     }
 }
