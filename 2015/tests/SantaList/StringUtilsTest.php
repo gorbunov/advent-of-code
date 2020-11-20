@@ -71,6 +71,7 @@ final class StringUtilsTest extends TestCase
         assertNotEquals(['aa', 'dd'], StringUtils::getPairedLetters('raragadfereadadd'));
         assertEquals(['qj'], StringUtils::getPairedLetters('qjhvhtzxzqqjkmpb'));
         assertEquals(['xx'], StringUtils::getPairedLetters('xxyxx'));
+        assertEquals(['st', 'tg'], StringUtils::getPairedLetters('uurcxstgmygtbstg'));
     }
 
     public function testCountPairs()
