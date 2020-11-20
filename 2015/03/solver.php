@@ -2,30 +2,34 @@
 
 require_once __DIR__.'/../shared/autoload.php';
 
-$directions = str_split(trim(file_get_contents('./directions.txt')), 1);
+$rawDirections = trim(file_get_contents('./directions.txt'));
+$directions = str_split($rawDirections, 1);
 $locations = new CityHouses();
 
 $startingPoint = Position2D::create(0, 0);
-$santa = Santa::createAtPosition($startingPoint);
-$locations->visit($startingPoint);
+$santa = Santa::createAtPosition($startingPoint, 'Santa');
+$robosanta = Santa::createAtPosition($startingPoint, 'RoboSanta');
+$locations->visit($startingPoint)->visit($startingPoint); // both santas visit 1st house
+$repo = SantaRepository::create($santa, $robosanta);
 
 foreach ($directions as $direction) {
+    $visitor = $repo->getCurrentSanta();
     switch ($direction) {
         case '^':
-            $santa->moveNorth();
+            $visitor->moveNorth();
             break;
         case 'v':
-            $santa->moveSouth();
+            $visitor->moveSouth();
             break;
         case '<':
-            $santa->moveWest();
+            $visitor->moveWest();
             break;
         case '>':
-            $santa->moveEast();
+            $visitor->moveEast();
             break;
     }
-    /** @noinspection DisconnectedForeachInstructionInspection */
-    $locations->visit($santa->getPosition());
+    $locations->visit($visitor->getPosition());
+    $repo->setNextSanta();
 }
 
 printf("Houses visited: %d\n", $locations->getVisitedHousesCount());

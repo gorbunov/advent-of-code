@@ -11,6 +11,7 @@ final class CityHouses
 
     public function visit(Position2D $position2D): self
     {
+        // printf("visits %d:%d\n", $position2D->getX(), $position2D->getY());
         return $this->addVisit($position2D->getX(), $position2D->getY());
     }
 
@@ -35,7 +36,8 @@ final class CityHouses
         return $total;
     }
 
-    public function getVisitedHousesCount():int {
+    public function getVisitedHousesCount(): int
+    {
         $total = 0;
         foreach ($this->visits as $row) {
             $total += count($row);

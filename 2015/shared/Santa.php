@@ -3,20 +3,22 @@
 final class Santa
 {
     private Position2D $position;
+    private string $name;
 
-    private function __construct(Position2D $position)
+    private function __construct(Position2D $position, string $name = 'Santa')
     {
         $this->position = $position;
+        $this->name = $name;
     }
 
-    public static function create(int $x, int $y): self
+    public static function create(int $x, int $y, string $name): self
     {
-        return self::createAtPosition(Position2D::create($x, $y));
+        return self::createAtPosition(Position2D::create($x, $y), $name);
     }
 
-    public static function createAtPosition(Position2D $position): self
+    public static function createAtPosition(Position2D $position, string $name): self
     {
-        return new Santa($position);
+        return new Santa(clone($position), $name);
     }
 
     public function moveDirection(string $direction): self
@@ -72,4 +74,14 @@ final class Santa
     {
         return clone($this->position);
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
 }
