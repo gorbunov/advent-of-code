@@ -17,9 +17,9 @@ final class Hasher
         $this->prefix_matcher = str_repeat('0', $this->prefix_size);
     }
 
-    public static function create(string $salt): Hasher
+    public static function create(string $salt, int $prefix_size): Hasher
     {
-        return new self($salt, 5);
+        return new self($salt, $prefix_size);
     }
 
     public function isCoinHash(string $value): bool

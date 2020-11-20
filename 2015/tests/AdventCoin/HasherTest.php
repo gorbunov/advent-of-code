@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdventCoin;
 
 use PHPUnit\Framework\TestCase;
@@ -24,13 +26,13 @@ final class HasherTest extends TestCase
      */
     public function testCalulateHashes($secret, $value, $expected)
     {
-        $hasher = Hasher::create($secret);
+        $hasher = Hasher::create($secret, 5);
         self::assertEquals($expected, $hasher->hash($value), 'Hashes doesnt match');
     }
 
     public function testIsNotCoinHash()
     {
-        $hasher = Hasher::create('random');
+        $hasher = Hasher::create('random', 5);
         self::assertFalse($hasher->isCoinHash('hash'), 'Hash matches coin, but it shouldnt');
     }
 
@@ -43,7 +45,7 @@ final class HasherTest extends TestCase
      */
     public function testIsCoinHash($secret, $value, $expected)
     {
-        $hasher = Hasher::create($secret);
+        $hasher = Hasher::create($secret, 5);
         self::assertTrue($hasher->isCoinHash($value), 'Hash is not coin');
     }
 }
