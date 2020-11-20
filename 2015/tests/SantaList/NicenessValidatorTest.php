@@ -22,12 +22,13 @@ final class NicenessValidatorTest extends TestCase
 
     /**
      * @dataProvider santaListProvider
+     *
      * @param $line
      * @param $isExpectedTobeNice
      */
-    public function testIsNice($line, $isExpectedTobeNice)
+    public function testIsNiceByRuleset1($line, $isExpectedTobeNice)
     {
-        $validator = NicenessValidator::create();
+        $validator = NicenessValidator::create(Ruleset01::getRules());
         self::assertEquals($isExpectedTobeNice, $validator->isNice($line));
     }
 }
