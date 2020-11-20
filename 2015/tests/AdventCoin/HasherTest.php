@@ -27,4 +27,23 @@ final class HasherTest extends TestCase
         $hasher = Hasher::create($secret);
         self::assertEquals($expected, $hasher->hash($value), 'Hashes doesnt match');
     }
+
+    public function testIsNotCoinHash()
+    {
+        $hasher = Hasher::create('random');
+        self::assertFalse($hasher->isCoinHash('hash'), 'Hash matches coin, but it shouldnt');
+    }
+
+    /**
+     * @dataProvider hashesProvider
+     *
+     * @param $secret
+     * @param $value
+     * @param $expected
+     */
+    public function testIsCoinHash($secret, $value, $expected)
+    {
+        $hasher = Hasher::create($secret);
+        self::assertTrue($hasher->isCoinHash($value), 'Hash is not coin');
+    }
 }

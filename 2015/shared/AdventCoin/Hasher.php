@@ -7,15 +7,25 @@ namespace AdventCoin;
 final class Hasher
 {
     private string $salt;
+    private string $prefix_matcher;
+    private int $prefix_size;
 
-    public function __construct(string $salt)
+    public function __construct(string $salt, int $prefix_size)
     {
         $this->salt = $salt;
+        $this->prefix_size = $prefix_size;
+        $this->prefix_matcher = str_repeat('0', $this->prefix_size);
     }
 
     public static function create(string $salt): Hasher
     {
-        return new self($salt);
+        return new self($salt, 5);
+    }
+
+    public function isCoinHash(string $value): bool
+    {
+        $hash = $this->hash($value);
+        return strpos($hash, $this->prefix_matcher) === 0;
     }
 
     public function hash(string $value): string
