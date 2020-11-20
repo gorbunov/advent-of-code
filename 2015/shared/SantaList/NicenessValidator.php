@@ -7,28 +7,19 @@ final class NicenessValidator
     /** @var array|callable[] */
     private array $rules = [];
 
-    private function __construct()
+    private function __construct(array $ruleset)
     {
-        $this->rules = [
-            // has 3+ vowels
-            static function (string $line) {
-                return StringUtils::getVowelsCount($line) >= 3;
-            },
-            // has pairs
-            static function (string $line) {
-                return StringUtils::hasPairedLetters($line);
-            },
-            // don't have naugthy letters
-            static function (string $line) {
-                $forbidden = ['ab', 'cd', 'pq', 'xy'];
-                return !StringUtils::hasForbiddenSubstrings($line, $forbidden);
-            },
-        ];
+        $this->rules = $ruleset;
     }
 
-    public static function create(): NicenessValidator
+    /**
+     * @param array|callable[] $ruleset
+     *
+     * @return NicenessValidator
+     */
+    public static function create(array $ruleset): NicenessValidator
     {
-        return new self();
+        return new self($ruleset);
     }
 
     public function isNice(string $line): bool

@@ -3,7 +3,9 @@ require_once __DIR__.'/../shared/autoload.php';
 
 $santaList = file('./santalist.txt', FILE_IGNORE_NEW_LINES);
 
-$validator = \SantaList\NicenessValidator::create();
+$ruleset = \SantaList\Ruleset01::getRules();
+
+$validator = \SantaList\NicenessValidator::create($ruleset);
 $nice = 0;
 foreach ($santaList as $line) {
     if ($validator->isNice($line)) {
