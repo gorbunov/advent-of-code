@@ -67,8 +67,10 @@ final class StringUtilsTest extends TestCase
 
     public function testPairedLetters()
     {
-        assertEquals(['aa', 'dd'], StringUtils::getPairedLetters('raragaadfereaadaadd'));
+        assertEquals(['ra', 'aa', 'ad'], StringUtils::getPairedLetters('raragaadfereaadaadd'));
         assertNotEquals(['aa', 'dd'], StringUtils::getPairedLetters('raragadfereadadd'));
+        assertEquals(['qj'], StringUtils::getPairedLetters('qjhvhtzxzqqjkmpb'));
+        assertEquals(['xx'], StringUtils::getPairedLetters('xxyxx'));
     }
 
     public function testCountPairs()
@@ -76,5 +78,6 @@ final class StringUtilsTest extends TestCase
         assertEquals(2, StringUtils::countPairs('aa', 'qorwqrqrqrquraarqrlqaaarqwroqrq'));
         assertEquals(2, StringUtils::countPairs('aa', 'qorwqrqrqrquraarqrlqaarqwroqrq'));
         assertEquals(1, StringUtils::countPairs('aa', 'qoradawqrqrqrqurabbarqrlqaarqwroqrq'));
+        assertEquals(4, StringUtils::countPairs('xy', 'xyxyxyxy'));
     }
 }

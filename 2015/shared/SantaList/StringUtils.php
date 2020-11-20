@@ -69,8 +69,9 @@ final class StringUtils
         $pairs = [];
         $letters = self::split($line);
         for ($i = 1, $iMax = \count($letters); $i < $iMax; $i++) {
-            if ($letters[$i - 1] === $letters[$i]) {
-                $pairs[] = $letters[$i].$letters[$i];
+            $possiblePair = $letters[$i - 1].$letters[$i];
+            if (self::countPairs($possiblePair, $line) > 1) {
+                $pairs[] = $possiblePair;
             }
         }
         return array_values(array_unique($pairs));

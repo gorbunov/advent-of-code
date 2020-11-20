@@ -12,6 +12,9 @@ final class Ruleset02
             static function (string $line) {
                 return StringUtils::hasPairedLettersSeparatedByLetter($line);
             },
+            static function (string $line) {
+                return \count(StringUtils::getPairedLetters($line)) > 0;
+            },
         ];
     }
 }
