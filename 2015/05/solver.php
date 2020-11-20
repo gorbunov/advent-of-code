@@ -17,6 +17,7 @@ foreach ($santaList as $line) {
     if ($validator2->isNice($line)) {
         $nice2++;
     }
+    // printf("%s: %b\n", $line, $validator2->isNice($line));
 }
 
 printf("Found nice in list (Ruleset1): %d\n", $nice1);

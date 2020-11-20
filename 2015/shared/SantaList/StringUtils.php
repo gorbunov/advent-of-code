@@ -87,7 +87,7 @@ final class StringUtils
                 break;
             }
             $found++;
-            $testString = substr($testString, 0, $pos).substr($testString, $pos + \strlen($pair));
+            $testString = substr($testString, 0, $pos).'__'.substr($testString, $pos + \strlen($pair));
         }
         return $found;
     }
