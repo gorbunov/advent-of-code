@@ -52,4 +52,42 @@ final class StringUtils
         }
         return false;
     }
+
+    public static function hasPairedLettersSeparatedByLetter(string $line): bool
+    {
+        $letters = self::split($line);
+        for ($i = 2, $iMax = \count($letters); $i < $iMax; $i++) {
+            if ($letters[$i - 2] === $letters[$i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function getPairedLetters(string $line): array
+    {
+        $pairs = [];
+        $letters = self::split($line);
+        for ($i = 1, $iMax = \count($letters); $i < $iMax; $i++) {
+            if ($letters[$i - 1] === $letters[$i]) {
+                $pairs[] = $letters[$i].$letters[$i];
+            }
+        }
+        return array_values(array_unique($pairs));
+    }
+
+    public static function countPairs(string $pair, string $line): int
+    {
+        $found = 0;
+        $testString = $line;
+        while (true) {
+            $pos = strpos($testString, $pair);
+            if ($pos === false) {
+                break;
+            }
+            $found++;
+            $testString = substr($testString, 0, $pos).substr($testString, $pos + \strlen($pair));
+        }
+        return $found;
+    }
 }

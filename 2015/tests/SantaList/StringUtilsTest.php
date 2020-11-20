@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertTrue;
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEquals;
 
 final class StringUtilsTest extends TestCase
 {
@@ -52,8 +53,28 @@ final class StringUtilsTest extends TestCase
         assertEquals($has, StringUtils::hasPairedLetters($string));
     }
 
-    public function testhasForbiddenLetters(){
+    public function testhasForbiddenLetters()
+    {
         assertTrue(StringUtils::hasForbiddenSubstrings('asdadbcvxbfasafsrarar', ['ar', 'bb']));
         assertFalse(StringUtils::hasForbiddenSubstrings('asdadbcvxbfasafsrarar', ['dd', 'bb']));
+    }
+
+    public function testHasPairedSeparatedLetters()
+    {
+        assertTrue(StringUtils::hasPairedLettersSeparatedByLetter('ieodomkazucvgmuy'));
+        assertFalse(StringUtils::hasPairedLettersSeparatedByLetter('uurcxstgmygtbstg'));
+    }
+
+    public function testPairedLetters()
+    {
+        assertEquals(['aa', 'dd'], StringUtils::getPairedLetters('raragaadfereaadaadd'));
+        assertNotEquals(['aa', 'dd'], StringUtils::getPairedLetters('raragadfereadadd'));
+    }
+
+    public function testCountPairs()
+    {
+        assertEquals(2, StringUtils::countPairs('aa', 'qorwqrqrqrquraarqrlqaaarqwroqrq'));
+        assertEquals(2, StringUtils::countPairs('aa', 'qorwqrqrqrquraarqrlqaarqwroqrq'));
+        assertEquals(1, StringUtils::countPairs('aa', 'qoradawqrqrqrqurabbarqrlqaarqwroqrq'));
     }
 }
