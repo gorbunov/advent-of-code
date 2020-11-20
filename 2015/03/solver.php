@@ -1,31 +1,31 @@
 <?php declare(strict_types=1);
+
+require_once __DIR__.'/../shared/autoload.php';
+
 $directions = str_split(trim(file_get_contents('./directions.txt')), 1);
-$locations = [];
-$x = 0;
-$y = 0;
-$locations[0][0] = 1;
+$locations = new CityHouses();
+
+$startingPoint = Position2D::create(0, 0);
+$santa = Santa::createAtPosition($startingPoint);
+$locations->visit($startingPoint);
+
 foreach ($directions as $direction) {
     switch ($direction) {
         case '^':
-            $y++;
+            $santa->moveNorth();
             break;
         case 'v':
-            $y--;
+            $santa->moveSouth();
             break;
         case '<':
-            $x--;
+            $santa->moveWest();
             break;
         case '>':
-            $x++;
+            $santa->moveEast();
             break;
     }
-    if (!isset($locations[$x][$y])) {
-        $locations[$x][$y] = 0;
-    }
-    $locations[$x][$y]++;
+    /** @noinspection DisconnectedForeachInstructionInspection */
+    $locations->visit($santa->getPosition());
 }
-$carry = 0;
-foreach ($locations as $x) {
-    $carry += count($x);
-}
-printf("Houses visited: %d\n", $carry);
+
+printf("Houses visited: %d\n", $locations->getVisitedHousesCount());
