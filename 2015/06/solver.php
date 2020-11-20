@@ -7,7 +7,7 @@ $commands = \Christmas\LightsGrid\CommandsList::parse($directions);
 $lights = \Christmas\LightsGrid::create();
 
 foreach ($commands as $command) {
-    $lights->apply($command);
+    $lights->applyBrightness($command);
 }
 
-printf("Turned on lights: %d\n", $lights->countPoweredLights());
+printf("Lights total brightness: %d\n", $lights->countPoweredLights());

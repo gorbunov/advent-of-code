@@ -53,6 +53,19 @@ final class LightsGrid
         return $this->setLight($x, $y, (int)!$this->getLight($x, $y));
     }
 
+    public function incBrightness(int $x, int $y, int $increment): self
+    {
+        $this->setLight($x, $y, $this->getLight($x, $y) + $increment);
+        return $this;
+    }
+
+    public function decBrightness(int $x, int $y): self
+    {
+        $brightness = max(0, $this->getLight($x, $y) - 1);
+        $this->setLight($x, $y, $brightness);
+        return $this;
+    }
+
     public function apply(Command $command): self
     {
         $area = $command->getRectangle();
@@ -83,6 +96,38 @@ final class LightsGrid
         }
         return $this;
     }
+
+    public function applyBrightness(Command $command): self
+    {
+        $area = $command->getRectangle();
+        switch ($command->getOperation()) {
+            case Command::TURN_ON:
+                $area->each(
+                    function ($x, $y) {
+                        $this->incBrightness($x, $y, 1);
+                    }
+                );
+                break;
+            case Command::TURN_OFF:
+                $area->each(
+                    function ($x, $y) {
+                        $this->decBrightness($x, $y);
+                    }
+                );
+                break;
+            case Command::TURN_TOGGLE:
+                $area->each(
+                    function ($x, $y) {
+                        $this->incBrightness($x, $y, 2);
+                    }
+                );
+                break;
+            default:
+                throw new \RuntimeException('Unsupported command');
+        }
+        return $this;
+    }
+
 
     public function countPoweredLights(): int
     {
