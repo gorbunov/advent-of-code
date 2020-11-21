@@ -26,6 +26,9 @@ final class Guest
 
     public function getRelationTo(string $to): Relation
     {
+        if (!isset($this->relations[$to])) {
+            $this->relations[$to] = Relation::create($to, 0);
+        }
         return $this->relations[$to];
     }
 

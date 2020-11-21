@@ -21,12 +21,24 @@ foreach ($guestlist as $line) {
     $relations->parse($line);
 }
 
-$seatings = $relations->getSeatings();
 $happiness = array_map(
     static function (\Guests\Seating $seating) {
         return $seating->getHappiness();
     },
-    $seatings
+    $relations->getSeatings()
 );
+
 $max = max($happiness);
 printf("Max happiness: %d\n", $max);
+
+$myself = $relations->getGuest('Myself');
+
+$happiness = array_map(
+    static function (\Guests\Seating $seating) {
+        return $seating->getHappiness();
+    },
+    $relations->getSeatings()
+);
+
+$max = max($happiness);
+printf("Max happiness with me: %d\n", $max);
