@@ -18,7 +18,7 @@ final class Recepie
 
     public function mix(array $percentages): Mixture
     {
-        printf("Mixing %d / %d / %d / %d\n", ...$percentages);
+        //printf("Mixing %d / %d / %d / %d\n", ...$percentages);
         $mixture = new Mixture();
         $index = 0;
         foreach ($this->ingredients as $ingredient) {

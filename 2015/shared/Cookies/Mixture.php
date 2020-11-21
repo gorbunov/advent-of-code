@@ -25,6 +25,7 @@ final class Mixture
                 $this->getDurabilityScore(),
                 $this->getFlavorScore(),
                 $this->getTextureScore(),
+                $this->getCalorieScore(),
             ]
         );
     }
@@ -59,5 +60,11 @@ final class Mixture
     private function getTextureScore(): int
     {
         return $this->getPropertyScore('texture');
+    }
+
+    private function getCalorieScore(): int
+    {
+        $calories = $this->getPropertyScore('calories');
+        return ($calories === 500) ? 1 : 0;
     }
 }
