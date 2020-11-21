@@ -36,6 +36,21 @@ final class ReindeerList
         return $this->reindeers[$name];
     }
 
+    public function leadersAtTime(int $time): array
+    {
+        $laptimes = $this->traveledAfter($time);
+        $bestDistance = max($laptimes);
+        $leaders = array_keys(
+            array_filter(
+                $laptimes,
+                static function ($lapDistance) use ($bestDistance) {
+                    return $lapDistance === $bestDistance;
+                }
+            )
+        );
+        return $leaders;
+    }
+
     public function traveledAfter(int $time): array
     {
         $laptime = [];
