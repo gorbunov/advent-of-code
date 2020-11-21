@@ -10,12 +10,15 @@ $santalist = [
 ];
 $santalist = file('./santalist.txt', FILE_IGNORE_NEW_LINES);
 
-$raw = 0;
-$evald = 0;
+$rawSize = 0;
+$evaledSize = 0;
+$encodedSize = 0;
 foreach ($santalist as $line) {
-    $raw += strlen($line);
     $parsed = \SantaList\StringEval::parse($line);
-    $evald += strlen($parsed);
+    $encoded = \SantaList\StringEval::encode($line);
+    $rawSize += strlen($line);
+    $evaledSize += strlen($parsed);
+    $encodedSize += strlen($encoded);
 }
 
-printf('Memory usage: (%d - %d) = %d', $raw, $evald, $raw - $evald);
+printf('Memory usage: (%d - %d) = %d, %d', $rawSize, $evaledSize, $rawSize - $evaledSize, $encodedSize - $rawSize);

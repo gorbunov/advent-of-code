@@ -20,6 +20,16 @@ class StringEvalTest extends TestCase
         ];
     }
 
+    public function encodedStringsProvider()
+    {
+        return [
+            ['"abc"', '"\"abc\""'],
+            ['"aaa\"aaa"', '"\"aaa\\\\\"aaa\""'],
+            ['""', '"\"\""'],
+            ['"\x27"', '"\"\\\x27\""'],
+        ];
+    }
+
     /**
      * @dataProvider unparsedStringsProvider
      *
@@ -29,5 +39,16 @@ class StringEvalTest extends TestCase
     public function testParse($string, $expected)
     {
         assertEquals($expected, StringEval::parse($string));
+    }
+
+    /**
+     * @dataProvider encodedStringsProvider
+     *
+     * @param $string
+     * @param $expected
+     */
+    public function testEncode($string, $expected)
+    {
+        assertEquals($expected, StringEval::encode($string));
     }
 }

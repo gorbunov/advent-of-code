@@ -56,4 +56,9 @@ final class StringEval
             },
         ];
     }
+
+    public static function encode(string $string): string
+    {
+        return '"'.addslashes($string).'"';
+    }
 }
