@@ -36,8 +36,30 @@ final class Sue
     {
         $correct = true;
         foreach ($this->attributes as $attribute => $value) {
-            $correct = $correct && ($value === $attributes[$attribute]);
+            $correct = $correct && ($this->matchAttribute($attribute, $attributes[$attribute], $value));
         }
         return $correct;
     }
+
+    private function matchAttribute(string $name, $descr, $aunts): bool
+    {
+        switch ($name) {
+            case 'cats':
+            case 'trees':
+                return $aunts > $descr;
+            case 'pomeranians':
+            case 'goldfish':
+                return $aunts < $descr;
+        }
+        return $aunts === $descr;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
 }

@@ -19,4 +19,4 @@ foreach ($aunts as $aunt) {
     $matcher->addAunt(\Aunts\Sue::parse($aunt));
 }
 
-var_dump($matcher->match($matches));
+print ($matcher->match($matches)->getName());
