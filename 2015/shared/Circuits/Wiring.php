@@ -111,4 +111,14 @@ final class Wiring
             printf("%s:\t%d\n", $wire->getName(), $wire->getSignal());
         }
     }
+
+    public function reset()
+    {
+        array_walk(
+            $this->wires,
+            function (Wire $wire) {
+                $wire->reset();
+            }
+        );
+    }
 }

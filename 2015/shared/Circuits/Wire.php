@@ -42,4 +42,9 @@ final class Wire implements SignalSource
         $this->sourceConnection = $connection;
         return $this;
     }
+
+    public function reset()
+    {
+        $this->signal = -1;
+    }
 }

@@ -17,5 +17,13 @@ foreach ($circuits as $circuit) {
     $connection = $wiring->parseConnection($circuit);
 }
 
-$wiring->getState();
+// $wiring->getState();
+$signalA = $wiring->getWireSignal('a');
+printf("Wire a signal: %d\n", $signalA);
+
+$bWire = $wiring->getWire('b');
+$bWire->setConnection(\Circuits\Connection::create(\Circuits\Gates\SignalValue::create($signalA), $bWire));
+
+$wiring->reset();
+
 printf("Wire a signal: %d\n", $wiring->getWireSignal('a'));
