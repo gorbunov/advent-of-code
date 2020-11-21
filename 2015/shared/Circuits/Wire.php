@@ -6,6 +6,7 @@ final class Wire implements SignalSource
 {
     private string $name;
     private int $signal;
+    private Connection $sourceConnection;
 
     private function __construct(string $name, int $signal)
     {
@@ -15,7 +16,7 @@ final class Wire implements SignalSource
 
     public static function create(string $name): Wire
     {
-        return self::createWithSignal($name, 0);
+        return self::createWithSignal($name, -1);
     }
 
     public static function createWithSignal(string $name, int $signal): Wire
@@ -30,11 +31,15 @@ final class Wire implements SignalSource
 
     public function getSignal(): int
     {
+        if ($this->signal === -1) {
+            $this->signal = $this->sourceConnection->getSource()->getSignal();
+        }
         return $this->signal;
     }
 
-    public function setSignal(int $signal): void
+    public function setConnection(Connection $connection)
     {
-        $this->signal = $signal;
+        $this->sourceConnection = $connection;
+        return $this;
     }
 }

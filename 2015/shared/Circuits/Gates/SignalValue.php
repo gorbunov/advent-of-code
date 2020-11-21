@@ -18,13 +18,17 @@ final class SignalValue implements SignalSource, GateInterface
         return new self($signal);
     }
 
+    public function inputs(...$inputs): void
+    {
+    }
+
+    public function apply(...$inputs): int
+    {
+        return $this->getSignal();
+    }
+
     public function getSignal(): int
     {
         return $this->signal;
-    }
-
-    public function inputs(...$inputs): SignalSource
-    {
-        return $this;
     }
 }

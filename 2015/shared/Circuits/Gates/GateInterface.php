@@ -4,7 +4,9 @@ namespace Circuits\Gates;
 
 use Circuits\SignalSource;
 
-interface GateInterface
+interface GateInterface extends SignalSource
 {
-    public function inputs(...$inputs): SignalSource;
+    public function inputs(...$inputs);
+
+    public function apply(...$inputs): int;
 }

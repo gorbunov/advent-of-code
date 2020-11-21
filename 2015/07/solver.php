@@ -10,12 +10,13 @@ $circuits = [
     'NOT x -> h',
     'NOT y -> i',
 ];
-$circuits = file('./circuits.txt', FILE_IGNORE_NEW_LINES);
+//$circuits = file('./circuits.txt', FILE_IGNORE_NEW_LINES);
 
 $wiring = \Circuits\Wiring::create();
 foreach ($circuits as $circuit) {
-    $wiring->parseConnection($circuit);
+    $connection = $wiring->parseConnection($circuit);
 }
 
-printf("Wire a signal: %d\n", $wiring->getWireSignal('a'));
-//$wiring->getState();
+//printf("Wire a signal: %d\n", $wiring->getWireSignal('i'));
+
+$wiring->getState();

@@ -6,18 +6,13 @@ use Circuits\SignalSource;
 
 final class OrGate implements SignalSource, GateInterface
 {
+    use StoresInputs;
+
     public const GATE_NAME = 'OR';
-    private int $signal = 0;
 
-    public function getSignal(): int
-    {
-        return $this->signal;
-    }
-
-    public function inputs(...$inputs): SignalSource
+    public function apply(...$inputs): int
     {
         [$a, $b] = $inputs;
-        $this->signal = $a | $b;
-        return $this;
+        return $a | $b;
     }
 }
