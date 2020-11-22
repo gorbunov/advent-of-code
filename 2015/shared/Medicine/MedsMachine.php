@@ -29,6 +29,19 @@ final class MedsMachine
         $this->replacements[$name]->addReplacement($replacement);
     }
 
+    public function reduce(string $combination, $depth = 0)
+    {
+        printf("Depth: %d, combo: %s\n", $depth, $this->molecule);
+        foreach ($this->getCombinations() as $combi) {
+            if ($combi === 'e') {
+                printf("Found at %d\n", $depth);
+                die($depth);
+            }
+            $submachine = self::cloneForMolecule($combi, $this);
+            $submachine->reduce($combi, $depth + 1);
+        }
+    }
+
     public function getCombinations()
     {
         $combinations = [];
@@ -59,5 +72,16 @@ final class MedsMachine
             // printf("Replacing %s with %s, @%d\n", $what, $withWhat, $nextPos);
         }
         return $replacements;
+    }
+
+    public static function cloneForMolecule(string $molecule, MedsMachine $machine): MedsMachine
+    {
+        return (clone($machine))->setMolecule($molecule);
+    }
+
+    private function setMolecule(string $molecule): MedsMachine
+    {
+        $this->molecule = $molecule;
+        return $this;
     }
 }
