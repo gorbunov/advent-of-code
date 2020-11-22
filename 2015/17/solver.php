@@ -13,7 +13,7 @@ $ckeys = array_map(
 $containers = array_combine($ckeys, $containers);
 $maxAmount = 150;
 
-/*$containers = ['a' => 20, 'b' => 15, 'c' => 10, 'd' => 5, 'e' => 5];
+/*$containers = ['ca' => 20, 'cb' => 15, 'cc' => 10, 'cd' => 5, 'ce' => 5];
 $maxAmount = 25;*/
 
 function get_combinations($options, $created, $maxAmount)
@@ -35,7 +35,7 @@ function get_combinations($options, $created, $maxAmount)
         } else {
             $kombo_keys = array_keys($next_combo);
             ksort($kombo_keys);
-            $combos[implode('-', $kombo_keys)] = $next_combo;
+            $combos[implode('', $kombo_keys)] = $next_combo;
         }
         $position++;
     }
@@ -56,7 +56,7 @@ $exact = array_filter(
     $atLeast,
     static function ($combo) use ($maxAmount, &$known) {
         ksort($combo);
-        $def = implode('-', array_keys($combo));
+        $def = implode('', array_keys($combo));
         if (in_array($def, $known, true)) {
             return false;
         }
@@ -65,4 +65,29 @@ $exact = array_filter(
     },
 );
 
-var_dump(count($exact));
+$minLength = array_reduce(
+    $exact,
+    static function ($carry, $combo) {
+        if ($carry > count($combo)) {
+            $carry = count($combo);
+        }
+        return $carry;
+    },
+    count($containers)
+);
+
+$minLengthCombosCount = array_reduce(
+    $exact,
+    static function ($carry, $combo) use ($minLength) {
+        if (count($combo) === $minLength) {
+            $carry++;
+        }
+        return $carry;
+    },
+    0
+);
+
+printf("Have %d combinations of containers.\n", count($exact));
+printf("Minimum number of containers is %d.\n", $minLength);
+printf("Combinations of minimum containers is %d.\n", $minLengthCombosCount);
+
