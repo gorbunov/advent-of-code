@@ -3,27 +3,66 @@ require_once __DIR__.'/../shared/autoload.php';
 
 $containers = file('./containers.txt', FILE_IGNORE_NEW_LINES);
 $containers = array_map('\intval', $containers);
+sort($containers, SORT_DESC | SORT_NUMERIC);
+$ckeys = array_map(
+    static function ($key) {
+        return 'c'.$key;
+    },
+    range(1, count($containers))
+);
+$containers = array_combine($ckeys, $containers);
+$maxAmount = 150;
 
-$containers = [20, 15, 10, 5, 5];
-$maxAmount = 25;
+/*$containers = ['a' => 20, 'b' => 15, 'c' => 10, 'd' => 5, 'e' => 5];
+$maxAmount = 25;*/
 
-function get_next_item($amount, $combination, $maxAmount)
+function get_combinations($options, $created, $maxAmount)
 {
-    $combinations = [];
-    foreach ($combination as $indx => $container) {
-        $nextAmount = $amount + $container;
-        if ($nextAmount === $maxAmount) {
-            return $combinations[] = $container;
+    // var_dump('enter', $options, $created);
+    $combos = [];
+    $position = 0;
+    foreach ($options as $key => $option) {
+        $next_combo = $created + [$key => $option];
+        if (array_sum($next_combo) > $maxAmount) {
+            continue;
         }
-        if ($nextAmount < $maxAmount) {
-            $left = array_slice($combination, 0, $indx + 1) + array_slice($combination, $indx + 1);
-            $next = get_next_item($nextAmount, $left, $maxAmount);
-            if (!is_null($next)) {
-                $combinations[] = [$container, $next];
-            }
+        $rest = array_slice($options, 0, $position, true) + array_slice($options, $position + 1, null, true);
+        // var_dump('next', $rest, $next_combo);
+        $deeper_combos = get_combinations($rest, $next_combo, $maxAmount);
+        if (!empty($deeper_combos)) {
+            /** @noinspection SlowArrayOperationsInLoopInspection */
+            $combos += $deeper_combos;
+        } else {
+            $kombo_keys = array_keys($next_combo);
+            ksort($kombo_keys);
+            $combos[implode('-', $kombo_keys)] = $next_combo;
         }
+        $position++;
     }
-    return $combinations;
+
+    $combos = array_filter(
+        $combos,
+        static function ($combo) use ($maxAmount) {
+            return array_sum($combo) === $maxAmount;
+        }
+    );
+
+    return $combos;
 }
 
-var_dump(get_next_item(0, $containers, $maxAmount));
+$atLeast = get_combinations($containers, [], $maxAmount);
+$known = [];
+$exact = array_filter(
+    $atLeast,
+    static function ($combo) use ($maxAmount, &$known) {
+        ksort($combo);
+        $def = implode('-', array_keys($combo));
+        if (in_array($def, $known, true)) {
+            return false;
+        }
+        $known[] = $def;
+        return (array_sum($combo) === $maxAmount);
+    },
+);
+
+var_dump(count($exact));
