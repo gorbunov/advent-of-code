@@ -40,9 +40,19 @@ function calculate_step(LightsGrid $grid, int $size)
     return $buffer;
 }
 
+function force_on_corners(LightsGrid $grid, int $size)
+{
+    $grid->setLightOn(0, 0);
+    $grid->setLightOn(0, $size - 1);
+    $grid->setLightOn($size - 1, 0);
+    $grid->setLightOn($size - 1, $size - 1);
+}
+
 //$grid->printState();
+force_on_corners($grid, $size);
 for ($step = 1; $step <= 100; $step++) {
     $grid = calculate_step($grid, $size);
+    force_on_corners($grid, $size);
     //printf("Step: %d\n", $step);
     //$grid->printState();
 }
