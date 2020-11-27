@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 require_once __DIR__.'/../shared/autoload.php';
+/** @var int[] $presents */
 $presents = array_map('intval', file('./presents.txt', FILE_IGNORE_NEW_LINES));
 $compartmentsCount = 3;
 
