@@ -65,8 +65,10 @@ final class Battle
         return $this->participants[0]->isAlive() && !$this->everybodyAlive();
     }
 
-    private function selectNextAttacker(): void
+    public function reset(): void
     {
-        $this->current = $this->getNextId($this->current);
+        foreach ($this->participants as $participant) {
+            $participant->reset();
+        }
     }
 }

@@ -6,8 +6,8 @@ namespace Rpg;
 
 final class PlayerEquipment extends BaseEquipment
 {
-    public static function create(int $price, int $attack, int $defence): Equipment
+    public static function create(string $name, int $price, int $attack, int $defence): Equipment
     {
-        return new static($price, $attack, $defence);
+        return new static($name, $price, $attack, $defence);
     }
 }

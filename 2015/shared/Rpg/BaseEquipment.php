@@ -9,12 +9,14 @@ abstract class BaseEquipment implements Equipment
     private int $attack;
     private int $defence;
     private int $price;
+    private string $name;
 
-    protected function __construct(int $price, int $attack, int $defence)
+    protected function __construct(string $name, int $price, int $attack, int $defence)
     {
         $this->price = $price;
         $this->attack = $attack;
         $this->defence = $defence;
+        $this->name = $name;
     }
 
     /**
@@ -40,4 +42,14 @@ abstract class BaseEquipment implements Equipment
     {
         return $this->price;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
 }

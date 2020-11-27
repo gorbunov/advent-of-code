@@ -8,6 +8,6 @@ final class BossEquipment extends BaseEquipment
 {
     public static function create(int $attack, int $defence): Equipment
     {
-        return new self(0, $attack, $defence);
+        return new self('Boss Equipment', 0, $attack, $defence);
     }
 }

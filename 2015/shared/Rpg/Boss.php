@@ -17,4 +17,9 @@ final class Boss extends BaseCharacter implements Character
         $boss->wearEquipment($eq);
         return $boss;
     }
+
+    public function reset(): void
+    {
+        $this->revive();
+    }
 }

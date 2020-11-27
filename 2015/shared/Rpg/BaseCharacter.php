@@ -6,10 +6,9 @@ namespace Rpg;
 abstract class BaseCharacter implements Character
 {
     private string $name;
-    private int $attack = 0;
-    private int $defence = 0;
     private int $totalHp;
     private int $currentHp;
+    /** @var Equipment[] */
     private array $equipment = [];
 
     public function __construct(string $name, int $totalHp, int $currentHp)
@@ -22,18 +21,6 @@ abstract class BaseCharacter implements Character
     public function wearEquipment(Equipment $equipment): void
     {
         $this->equipment[] = $equipment;
-        $this->addAttack($equipment->getAttack());
-        $this->addDefence($equipment->getDefence());
-    }
-
-    private function addAttack(int $amount): void
-    {
-        $this->attack += $amount;
-    }
-
-    private function addDefence(int $amount): void
-    {
-        $this->defence += $amount;
     }
 
     public function isAlive(): bool
@@ -57,7 +44,12 @@ abstract class BaseCharacter implements Character
      */
     public function getDefence(): int
     {
-        return $this->defence;
+        $defence = 0;
+        foreach ($this->equipment as $piece) {
+            $defence += $piece->getDefence();
+        }
+        return $defence;
+
     }
 
     public function attack(Character $character): void
@@ -80,11 +72,25 @@ abstract class BaseCharacter implements Character
      */
     public function getAttack(): int
     {
-        return $this->attack;
+        $attack = 0;
+        foreach ($this->equipment as $piece) {
+            $attack += $piece->getAttack();
+        }
+        return $attack;
     }
 
     public function getHealth(): int
     {
         return $this->currentHp;
+    }
+
+    public function revive(): void
+    {
+        $this->currentHp = $this->totalHp;
+    }
+
+    protected function dropEquipment()
+    {
+        $this->equipment = [];
     }
 }

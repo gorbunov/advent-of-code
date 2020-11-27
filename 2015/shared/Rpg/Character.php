@@ -22,4 +22,8 @@ interface Character
     public function getDefence(): int;
 
     public function getHealth(): int;
+
+    public function reset(): void;
+
+    public function revive(): void;
 }

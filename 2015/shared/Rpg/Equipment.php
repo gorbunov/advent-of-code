@@ -11,4 +11,6 @@ interface Equipment
     public function getPrice(): int;
 
     public function getAttack(): int;
+
+    public function getName(): string;
 }
