@@ -13,7 +13,7 @@ final class Runner
         $this->reset();
     }
 
-    private function reset()
+    public function reset()
     {
         $this->cpuState = CpuState::create();
     }
@@ -44,4 +44,14 @@ final class Runner
             $this->cpuState = $command->apply($this->cpuState);
         }
     }
+
+    /**
+     * @return CpuState
+     */
+    public function getCpuState(): CpuState
+    {
+        return $this->cpuState;
+    }
+
+
 }

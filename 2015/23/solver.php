@@ -7,5 +7,9 @@ $load = file('./program.txt');
 $runner = \AsmRunner\Runner:: create();
 $program = \AsmRunner\Program::parse($load);
 $haltState = $runner->run($program);
+printf("Part 01: %d\n", $haltState->getRegistry('b'));
 
-var_dump($haltState);
+$runner->reset();
+$runner->getCpuState()->setRegistry('a', 1);
+$haltState = $runner->run($program);
+printf("Part 02: %d\n", $haltState->getRegistry('b'));
