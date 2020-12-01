@@ -21,3 +21,24 @@ foreach ($directions as $direction) {
 }
 
 printf("Taxicab distance: %d\n", $map->getTaxicabDistance());
+
+$map = new \CityMap\MapPosition();
+foreach ($directions as $direction) {
+    $turn = $direction[0];
+    $distance = (int)substr($direction, 1);
+    // printf("Turning: %s, Moving %d steps %s\n", $turn, $distance, $map->getOrientation());
+    switch ($turn) {
+        case 'R':
+            $map->turnRight();
+            break;
+        case 'L':
+            $map->turnLeft();
+            break;
+    }
+    $map->moveForward($distance);
+    if ($map->hadCrossing()) {
+        break;
+    }
+}
+var_dump($map->getFirstCrossing());
+printf("Taxicab distance to first crossing: %d\n", $map->getTaxicabDistanceTo($map->getFirstCrossing()));
