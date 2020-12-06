@@ -57,4 +57,9 @@ final class Passport
     {
         return isset($this->properties[$name]);
     }
+
+    public function getProperty(string $name): PassportProperty
+    {
+        return $this->properties[$name];
+    }
 }

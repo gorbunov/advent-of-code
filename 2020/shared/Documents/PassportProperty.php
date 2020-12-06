@@ -28,6 +28,4 @@ final class PassportProperty
     {
         return $this->value;
     }
-
-
 }
