@@ -10,9 +10,7 @@ $passports = explode("\n\n", $doclist);
 /** @var \Documents\Passport[] $passports */
 $passports = array_map([\Documents\Passport::class, 'parse'], $passports);
 
-$validation = array_map([\Documents\PasswordValidator::class, 'validate'], $passports);
+$validation = array_map([\Documents\PassportValidator::class, 'validate'], $passports);
 $valid = array_filter($validation, fn($validity) => $validity === true);
 
-//var_dump($validation);
-//var_dump(\Documents\PasswordValidator::validateField($passports[3]->getProperty('pid')));
 printf("Total valid passports: %d\n", count($valid));

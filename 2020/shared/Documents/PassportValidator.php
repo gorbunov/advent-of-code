@@ -2,7 +2,7 @@
 
 namespace Documents;
 
-final class PasswordValidator
+final class PassportValidator
 {
     private static $required = [
         'byr',
