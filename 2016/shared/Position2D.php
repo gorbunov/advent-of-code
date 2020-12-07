@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-final class Position2D
+final class Position2D implements Stringable
 {
     private int $x;
     private int $y;
@@ -19,13 +19,13 @@ final class Position2D
 
     public function moveUp(int $distance = 1): self
     {
-        $this->y -= $distance;
+        $this->y += $distance;
         return $this;
     }
 
     public function moveDown(int $distance = 1): self
     {
-        $this->y += $distance;
+        $this->y -= $distance;
         return $this;
     }
 
@@ -57,5 +57,13 @@ final class Position2D
         return $this->y;
     }
 
+    public function createWithOffset(int $xOffset, int $yOffset): Position2D
+    {
+        return Position2D::create($this->getX() + $xOffset, $this->getY() + $yOffset);
+    }
 
+    public function __toString()
+    {
+        return $this->getX().':'.$this->getY();
+    }
 }

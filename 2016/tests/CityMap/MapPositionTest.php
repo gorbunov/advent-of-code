@@ -17,11 +17,11 @@ final class MapPositionTest extends TestCase
 
         assertEquals(MapPosition::LOOK_NORTH, $map->getOrientation());
         $map->turnLeft();
-        assertEquals(MapPosition::LOOK_EAST, $map->getOrientation());
+        assertEquals(MapPosition::LOOK_WEST, $map->getOrientation());
         $map->turnLeft();
         assertEquals(MapPosition:: LOOK_SOUTH, $map->getOrientation());
         $map->turnLeft();
-        assertEquals(MapPosition:: LOOK_WEST, $map->getOrientation());
+        assertEquals(MapPosition:: LOOK_EAST, $map->getOrientation());
         $map->turnLeft();
         assertEquals(MapPosition:: LOOK_NORTH, $map->getOrientation());
     }
@@ -32,11 +32,11 @@ final class MapPositionTest extends TestCase
 
         assertEquals(MapPosition::LOOK_NORTH, $map->getOrientation());
         $map->turnRight();
-        assertEquals(MapPosition::LOOK_WEST, $map->getOrientation());
+        assertEquals(MapPosition::LOOK_EAST, $map->getOrientation());
         $map->turnRight();
         assertEquals(MapPosition::LOOK_SOUTH, $map->getOrientation());
         $map->turnRight();
-        assertEquals(MapPosition::LOOK_EAST, $map->getOrientation());
+        assertEquals(MapPosition::LOOK_WEST, $map->getOrientation());
         $map->turnRight();
         assertEquals(MapPosition::LOOK_NORTH, $map->getOrientation());
     }

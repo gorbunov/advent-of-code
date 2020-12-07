@@ -4,6 +4,8 @@
 namespace CityMap;
 
 
+use JetBrains\PhpStorm\ExpectedValues;
+
 final class MapPosition
 {
     public const LOOK_NORTH = 0;
@@ -13,9 +15,16 @@ final class MapPosition
 
     private array $rotation = [
         self::LOOK_NORTH,
-        self::LOOK_EAST,
-        self::LOOK_SOUTH,
         self::LOOK_WEST,
+        self::LOOK_SOUTH,
+        self::LOOK_EAST,
+    ];
+
+    private array $changes = [
+        self::LOOK_NORTH => ['x' => 0, 'y' => 1],
+        self::LOOK_WEST  => ['x' => -1, 'y' => 0],
+        self::LOOK_SOUTH => ['x' => 0, 'y' => -1],
+        self::LOOK_EAST  => ['x' => 1, 'y' => 0],
     ];
 
     #[ExpectedValues(valuesFromClass: MapPosition::class)]
@@ -48,7 +57,7 @@ final class MapPosition
             },
             $this->visited
         );
-        return count($positions) !== array_unique($positions);
+        return count($positions) !== count(array_unique($positions));
     }
 
     public function getFirstCrossing(): \Position2D
@@ -72,18 +81,18 @@ final class MapPosition
 
     public function turnLeft()
     {
-        $nextIndex = $this->orientation + 1;
-        if ($nextIndex >= count($this->rotation)) {
-            $nextIndex = 0;
+        $nextIndex = $this->orientation - 1;
+        if ($nextIndex < 0) {
+            $nextIndex = count($this->rotation) - 1;
         }
         $this->orientation = $nextIndex;
     }
 
     public function turnRight()
     {
-        $nextIndex = $this->orientation - 1;
-        if ($nextIndex < 0) {
-            $nextIndex = count($this->rotation) - 1;
+        $nextIndex = $this->orientation + 1;
+        if ($nextIndex === count($this->rotation)) {
+            $nextIndex = 0;
         }
         $this->orientation = $nextIndex;
     }
@@ -98,7 +107,8 @@ final class MapPosition
 
     public function moveForward(int $distance)
     {
-        $previous = clone $this->position;
+        $this->storeLine($distance);
+
         switch ($this->orientation) {
             case self::LOOK_NORTH:
                 $this->position->moveUp($distance);
@@ -115,15 +125,17 @@ final class MapPosition
             default:
                 throw new \RuntimeException('Unexpected value');
         }
-        $this->storeLine($previous, $this->position);
+
     }
 
-    private function storeLine(\Position2D $from, \Position2D $to, int $distance)
+    private function storeLine(int $distance)
     {
-        foreach (range($from->getX(), $to->getX()) as $x) {
-            foreach (range($from->getY(), $to->getY()) as $y) {
-                $this->storePosition(\Position2D::create($x, $y));
-            }
+        $offsets = $this->changes[$this->orientation];
+        $point = clone $this->position;
+        foreach (range(1, $distance) as $ch) {
+            $point = $point->createWithOffset($offsets['x'], $offsets['y']);
+            #printf ("DIR: %d, DIST: %d, adding POINT: %s\n", $this->orientation, $distance, $point);
+            $this->storePosition($point);
         }
     }
 
@@ -137,5 +149,11 @@ final class MapPosition
         return abs($position->getX()) + abs($position->getY());
     }
 
-
+    /**
+     * @return array
+     */
+    public function getVisited(): array
+    {
+        return array_map('strval', $this->visited);
+    }
 }
