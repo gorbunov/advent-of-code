@@ -54,7 +54,7 @@ final class AdaptersList
 
     public static function getPluggableAdapters(Adapter $adapter, array $adaptersList): array
     {
-        return array_filter($adaptersList, fn(Adapter $matching) => $adapter->canBePluggedInto($matching));
+        return array_filter($adaptersList, fn(Adapter $matching) => $matching->canBePluggedInto($adapter));
     }
 
     /**
@@ -135,20 +135,33 @@ final class AdaptersList
         return $found;
     }
 
-    public function backtrack(Adapter $adapter, Adapter $outlet): int
+    public function getWithLowerRating(Adapter $adapter): AdaptersList
     {
-        if ($adapter->canTake($outlet->getRating())) { // we can connect to outlet!
-            return 1; // +1 instead, if chain can be longer?
-        }
-        $rest = $this->without($adapter);
-        if ($rest->isEmpty()) {
-            return 0; // dead end of chain
-        }
+        return new AdaptersList(array_filter($this->adapters, fn($matching) => $matching->getRating() < $adapter->getRating()));
+    }
+
+    public function backtrack(Adapter $adapter, Adapter $outlet, array &$known): int
+    {
         $found = 0;
-        foreach ($rest->getAdapters() as $next) {
-            $found += $rest->backtrack($next, $outlet);
+        if ($outlet->canBePluggedInto($adapter)) { // we can connect to outlet!
+            $found++;
+        }
+        if (array_key_exists($adapter->getRating(), $known)) {
+            return $known[$adapter->getRating()];
+        }
+        $rest = $this->getWithLowerRating($adapter);
+        $pluggable = $rest->getPluggable($adapter);
+        foreach ($pluggable->getAdapters() as $next) {
+            $indepth = $rest->backtrack($next, $outlet, $known);
+            $known[$next->getRating()] = $indepth;
+            $found += $indepth;
         }
         return $found;
+    }
+
+    public function getPluggable(Adapter $adapter): AdaptersList
+    {
+        return new AdaptersList(self::getPluggableAdapters($adapter, $this->adapters));
     }
 
     public function next(Adapter $adapter)
@@ -190,5 +203,13 @@ final class AdaptersList
     public function begin(Adapter $outlet): array
     {
         return array_merge([$outlet], $this->next($outlet));
+    }
+
+    public function paths(Adapter $outlet, Adapter $getDevice): int
+    {
+        $known[0] = 1;
+        foreach ($this->adapters as $adapter) {
+            $suitable = $this->suitable($adapter);
+        }
     }
 }
