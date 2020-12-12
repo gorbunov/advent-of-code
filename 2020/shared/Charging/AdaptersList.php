@@ -52,6 +52,11 @@ final class AdaptersList
         return $suitable[array_key_first($suitable)];
     }
 
+    public static function getPluggableAdapters(Adapter $adapter, array $adaptersList): array
+    {
+        return array_filter($adaptersList, fn(Adapter $matching) => $adapter->canBePluggedInto($matching));
+    }
+
     /**
      * @param Adapter[] $usedAdapters
      * @param Adapter[] $allOfAdapters
@@ -126,6 +131,22 @@ final class AdaptersList
         $found = 0;
         foreach ($chainsTo->getAdapters() as $next) {
             $found += $rest->chains($next, $device);
+        }
+        return $found;
+    }
+
+    public function backtrack(Adapter $adapter, Adapter $outlet): int
+    {
+        if ($adapter->canTake($outlet->getRating())) { // we can connect to outlet!
+            return 1; // +1 instead, if chain can be longer?
+        }
+        $rest = $this->without($adapter);
+        if ($rest->isEmpty()) {
+            return 0; // dead end of chain
+        }
+        $found = 0;
+        foreach ($rest->getAdapters() as $next) {
+            $found += $rest->backtrack($next, $outlet);
         }
         return $found;
     }
