@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 require_once __DIR__.'/../shared/autoload.php';
 
-use Decoding\Decoder;
+$bootcode = file('./bootcode.txt', FILE_IGNORE_NEW_LINES);
+// $bootcode = file('./bootcode-example.txt', FILE_IGNORE_NEW_LINES);
 
-$data = file('./datastream.txt', FILE_IGNORE_NEW_LINES);
-//$data = file('./datastream-example.txt', FILE_IGNORE_NEW_LINES);
+$console = new \Handheld\Console();
 
-$stream = array_map('\intval', $data);
+$program = \Handheld\Code\Program::load($bootcode);
+$console->run($program);
 
-$codes = Decoder::prepare($stream, 25);
+printf("Mem acc is %d\n", $console->getAcc());
 
-$sequenceBreaker = $codes->findSequenceBreak();
-printf("Sequence breaks at: %d\n", $sequenceBreaker);
-printf("Sequence decoding edges sum: %d\n", $codes->sumMinMaxSequence(...array_keys($codes->sequenceWalk($sequenceBreaker))));
-# var_dump($codes->sequenceWalk($sequenceBreaker));
+$console->runUntilNotHalted($program);
+
+printf("Mem acc with unhalted fix is %d\n", $console->getAcc());
