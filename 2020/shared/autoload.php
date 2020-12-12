@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-require_once __DIR__ . '/functions.php';
+require_once __DIR__.'/functions.php';
 spl_autoload_register(
     static function ($classname) {
         /** @noinspection PhpIncludeInspection */
